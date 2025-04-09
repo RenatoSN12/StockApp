@@ -1,11 +1,8 @@
-using System.Security.Claims;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
 using StockApp.Domain.Abstractions.Results;
 using StockApp.Domain.DTOs.Responses;
-using StockApp.Domain.Entities;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Users;
 

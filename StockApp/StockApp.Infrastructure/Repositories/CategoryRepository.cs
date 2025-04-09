@@ -15,7 +15,7 @@ public class CategoryRepository(AppDbContext context) : ICategoryRepository
         CancellationToken cancellationToken = default)
     {
         var query = context.Categories.AsNoTracking().Where(specification.ToExpression())
-            .OrderByDescending(x => x.Title);
+            .OrderBy(x => x.Id);
 
         var categories = await query
             .Skip((pageNumber - 1) * pageSize)
@@ -24,8 +24,23 @@ public class CategoryRepository(AppDbContext context) : ICategoryRepository
 
         return categories;
     }
+
+    public async Task<Category?> GetById(GetCategoryByIdSpecification specification, bool asNoTracking, CancellationToken cancellationToken)
+    {
+        var query = context.Categories.AsQueryable();
+        if (asNoTracking)
+            query = query.AsNoTracking();
+        
+        return await query
+            .Where(specification.ToExpression())
+            .FirstOrDefaultAsync(cancellationToken);
+    }
     public async Task AddAsync(Category category, CancellationToken cancellationToken)
         => await context.Categories.AddAsync(category, cancellationToken);
+
+    public void Remove(Category category, CancellationToken cancellationToken)
+        => context.Categories.Remove(category);
+    
     public async Task<int> GetTotalCount(ISpecification<Category> specification, CancellationToken cancellationToken = default)
         => await context.Categories.AsNoTracking().Where(specification.ToExpression()).CountAsync(cancellationToken);
 }

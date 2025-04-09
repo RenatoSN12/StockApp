@@ -30,7 +30,7 @@ public partial class CreateCategoryDialogBase : ComponentBase
     
     #endregion
 
-    protected async Task OnValidSubmitAsync()
+    protected async Task<DialogResult> OnValidSubmitAsync()
     {
         IsBusy = true;
 
@@ -38,25 +38,27 @@ public partial class CreateCategoryDialogBase : ComponentBase
         {
             var result = await CategoryService.CreateCategoryAsync(Model);
             if (result.IsSuccess)
-                NavigationManager.NavigateTo("/categories");
+                MudDialog.Close(DialogResult.Ok(result.Value));
             else
             {
                 foreach (var error in result.Error.Message.SplitErrors())
                 {
                     Snackbar.Add(error, Severity.Error);
                 }
+                return DialogResult.Cancel();
             }
         }
         catch (Exception e)
         {
-            Snackbar.Add(e.Message, Severity.Error);
+            Snackbar.Add("Ocorreu um erro inesperado ao salvar a categoria.", Severity.Error);
         }
         finally
         {
             IsBusy = false;
         }
+        return DialogResult.Cancel();
     }
-    
+
     protected void Cancel()
     {
         MudDialog.Close(DialogResult.Cancel());

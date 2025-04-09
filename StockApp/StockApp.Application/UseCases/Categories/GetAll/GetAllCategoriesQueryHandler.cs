@@ -5,7 +5,7 @@ using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Categories;
 
-namespace StockApp.Application.UseCases.Categories.Queries;
+namespace StockApp.Application.UseCases.Categories.GetAll;
 public sealed class GetAllCategoriesQueryHandler(ICategoryRepository repository)
     : IRequestHandler<GetAllCategoriesQuery, PagedResult<List<CategoryDto>?>>
 {

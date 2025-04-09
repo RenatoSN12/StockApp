@@ -36,4 +36,17 @@ public class CategoryService(IHttpClientFactory httpClientFactory) : ICategorySe
             ? Result.Failure<CategoryDto?>(readResult.Error) 
             : readResult;
     }
+
+    public async Task<Result> DeleteCategoryAsync(int id, CancellationToken cancellationToken = default)
+    {
+        var result = await _httpClient.DeleteAsync($"/api/categories/{id}", cancellationToken);
+        var readResult = await result.Content.ReadFromJsonAsync<Result>(cancellationToken: cancellationToken);
+        
+        if (readResult is null)
+            return Result.Failure<CategoryDto?>(new Error("400", "Ocorreu um erro inesperado ao deletar a categoria."));
+        
+        return readResult.IsFailure 
+            ? Result.Failure(readResult.Error) 
+            : readResult;
+    }
 }

@@ -1,6 +1,4 @@
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using StockApp.Application.Extensions;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
 using StockApp.Domain.Abstractions.Results;
@@ -9,7 +7,7 @@ using StockApp.Domain.Entities;
 using StockApp.Domain.Enums;
 using StockApp.Domain.Repositories;
 
-namespace StockApp.Application.UseCases.Categories.Commands;
+namespace StockApp.Application.UseCases.Categories.Create;
 
 public sealed class CreateCategoryCommandHandler(ICategoryRepository repository, IUnitOfWork unitOfWork)
     : IRequestHandler<CreateCategoryCommand, Result<CategoryDto>>
@@ -20,22 +18,20 @@ public sealed class CreateCategoryCommandHandler(ICategoryRepository repository,
         {
             var category = new Category
             {
-                Description = request.Description,
+                Description = request.CreateCategoryDto.Description,
+                Title = request.CreateCategoryDto.Title,
                 Status = EStatus.Active,
-                Title = request.Title,
                 UserId = request.UserId
             };
 
             await repository.AddAsync(category, cancellationToken);
-            await unitOfWork.CommitAsync();
+            await unitOfWork.CommitAsync(cancellationToken);
 
             return Result<CategoryDto>.Success(new CategoryDto(category.Id, category.Title));
         }
         catch
         {
             return Result<CategoryDto>.Failure(new Error("500", "Ocorreu um erro inesperado ao criar a categoria."));
-
         }
     }
 }
-

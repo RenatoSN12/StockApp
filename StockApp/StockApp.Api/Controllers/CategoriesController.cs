@@ -2,8 +2,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockApp.Api.Common.Extensions;
-using StockApp.Application.UseCases.Categories.Commands;
-using StockApp.Application.UseCases.Categories.Queries;
+using StockApp.Application.UseCases.Categories.Create;
+using StockApp.Application.UseCases.Categories.Delete;
+using StockApp.Application.UseCases.Categories.GetAll;
 using StockApp.Domain.DTOs.Requests.Categories;
 
 namespace StockApp.Api.Controllers;
@@ -29,9 +30,22 @@ public class CategoriesController(ISender sender) : ControllerBase
     public async Task<IActionResult> Create([FromBody] CreateCategoryDto request)
     {
         var userId = HttpContext.GetUserEmail();
-        var command = new CreateCategoryCommand(userId, request.Title, request.Description);
+        var command = new CreateCategoryCommand(userId, request);
         
         var result = await sender.Send(command);
+        return result.IsSuccess
+            ? Ok(result)
+            : BadRequest(result);
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var userId = HttpContext.GetUserEmail();
+        var command = new DeleteCategoryCommand(userId,id);
+        
+        var result = await sender.Send(command);
+        
         return result.IsSuccess
             ? Ok(result)
             : BadRequest(result);

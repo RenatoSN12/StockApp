@@ -53,9 +53,18 @@ public partial class ListCategoriesPage : ComponentBase
     protected async Task OpenNewCategoryDialog()
     {
         var parameters = new DialogParameters { { "Model", new CreateCategoryDto() } };
-        
         var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Small, FullWidth = true };
-        await DialogService.ShowAsync<CreateCategoryDialog>("Nova Categoria", parameters, options);
+
+        var dialog = await DialogService.ShowAsync<CreateCategoryDialog>("Nova Categoria", parameters, options);
+
+        var result = await dialog.Result;
+
+        if (!result!.Canceled && result.Data is CategoryDto novaCategoria)
+        {
+            Categories.Add(novaCategoria);
+            Snackbar.Add("Categoria criada com sucesso!", Severity.Success);
+            StateHasChanged();
+        }
     }
 
     public void OnDeleteButtonClickedAsync(long id, string title)

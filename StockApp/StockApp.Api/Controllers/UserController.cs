@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StockApp.Api.Common.Extensions;
 using StockApp.Application.UseCases.Authentication.GetUserInfo;
 
 namespace StockApp.Api.Controllers;
@@ -13,7 +14,7 @@ public class UserController(ISender sender) : ControllerBase
     [HttpGet("info")]
     public async Task<IActionResult> GetUserInfo()
     {
-        var query = new GetUserInfoQuery();
+        var query = new GetUserInfoQuery(HttpContext.GetUserEmail());
         var result = await sender.Send(query);
             
         if (!result.IsSuccess || result.Value is null)

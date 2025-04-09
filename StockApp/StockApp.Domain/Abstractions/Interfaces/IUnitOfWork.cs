@@ -2,5 +2,5 @@ namespace StockApp.Domain.Abstractions.Interfaces;
 
 public interface IUnitOfWork
 {
-    Task CommitAsync();
+    Task CommitAsync(CancellationToken cancellationToken = default);
 }

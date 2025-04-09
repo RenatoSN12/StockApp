@@ -4,5 +4,6 @@ namespace StockApp.Infrastructure.Data;
 
 public class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
-    public async Task CommitAsync() => await context.SaveChangesAsync();
+    public async Task CommitAsync(CancellationToken cancellationToken) 
+        => await context.SaveChangesAsync(cancellationToken);
 }

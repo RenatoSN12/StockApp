@@ -1,12 +1,11 @@
 using System.Linq.Expressions;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Entities;
-using StockApp.Domain.Enums;
 
 namespace StockApp.Domain.Specification.Categories;
 
-public sealed class GetAllCategoriesByUserSpecification(string email) : Specification<Category>
+public sealed class GetCategoryByIdSpecification(string userId, int id) : Specification<Category>
 {
     public override Expression<Func<Category, bool>> ToExpression()
-        => category => category.UserId == email && category.Status == EStatus.Active;    
+        => category => category.Id == id && category.UserId == userId;
 }
