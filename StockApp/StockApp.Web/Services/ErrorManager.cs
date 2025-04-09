@@ -1,5 +1,7 @@
 using System.Net;
 using System.Text.Json;
+using StockApp.Domain.Abstractions;
+using StockApp.Domain.Abstractions.Results;
 using StockApp.Web.Extensions;
 
 namespace StockApp.Web.Services;
@@ -11,7 +13,7 @@ public static class ErrorManager
         PropertyNameCaseInsensitive = true,
         IncludeFields = true,
     };
-    public static async Task<ErrorReturn> ExtractErrorResponse (HttpResponseMessage response)
+    private static async Task<ErrorReturn> ExtractErrorResponse (HttpResponseMessage response)
     {
         try
         {
@@ -42,5 +44,16 @@ public static class ErrorManager
                 Message = $"Erro ao processar a resposta do servidor: {e.Message}"
             };
         }
+    }
+    public static async Task<Result> ErrorResponse(HttpResponseMessage response)
+    {
+        var errorResponse = await ExtractErrorResponse(response);
+        return Result.Failure(new Error(errorResponse.Code, errorResponse.Message));
+    }
+    
+    public static async Task<Result<T>> ErrorPagedResponse<T>(HttpResponseMessage response)
+    {
+        var errorResponse = await ExtractErrorResponse(response);
+        return Result<T>.Failure(new Error(errorResponse.Code, errorResponse.Message));
     }
 }

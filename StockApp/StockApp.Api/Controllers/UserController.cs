@@ -20,6 +20,6 @@ public class UserController(ISender sender) : ControllerBase
         if (!result.IsSuccess || result.Value is null)
             return BadRequest(result.Error);
             
-        return Ok(result);
+        return Ok(result.Value);
     }
 }

@@ -34,6 +34,17 @@
         <PropertyColumn Property="x => x.Id" Title="#"/>
         <PropertyColumn Property="x => x.Title" Title="Categoria"/>
         <TemplateColumn>
+                <CellTemplate>
+                    <div class="d-flex justify-end">
+                        <MudStack Row>
+                        <MudIconButton
+                            Icon="@Icons.Material.Filled.Delete"
+                            Color="Color.Error"
+                            aria-label="Excluir"
+                            OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id, context.Item.Title)"/>
+                    </MudStack>
+                </div>
+            </CellTemplate>
             @* <CellTemplate> *@
             @*     <div class="d-flex justify-end"> *@
             @*         <MudStack Row> *@
@@ -41,14 +52,6 @@
             @*                 Icon="@Icons.Material.Filled.Edit" *@
             @*                 Href="@($"/categorias/editar/{context.Item.Id}")" *@
             @*                 Color="Color.Primary"/> *@
-            @*             <MudIconButton *@
-            @*                 Icon="@Icons.Material.Filled.Delete" *@
-            @*                 Color="Color.Error" *@
-            @*                 aria-label="Excluir" *@
-            @*                 OnClick="() => OnDeleteButtonClickedAsync(context.Item.Id, context.Item.Title)"/> *@
-            @*         </MudStack> *@
-            @*     </div> *@
-            @* </CellTemplate> *@
         </TemplateColumn>
     </Columns>
 </MudDataGrid>

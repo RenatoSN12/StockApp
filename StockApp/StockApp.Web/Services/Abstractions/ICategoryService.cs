@@ -8,6 +8,7 @@ namespace StockApp.Web.Services.Abstractions;
 
 public interface ICategoryService
 {
-    Task<PagedResult<List<CategoryDto>?>> GetAllCategoriesAsync(CancellationToken cancellationToken = default);
+    Task<Result<PagedResponse<List<CategoryDto>>>> GetAllCategoriesAsync(CancellationToken cancellationToken = default);
     Task<Result<CategoryDto?>> CreateCategoryAsync(CreateCategoryDto request, CancellationToken cancellationToken = default);
+    Task<Result> DeleteAsync(long id, CancellationToken cancellationToken = default);
 }

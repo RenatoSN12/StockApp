@@ -7,11 +7,12 @@ using StockApp.Domain.DTOs.Responses;
 
 namespace StockApp.Web.Security;
 
-public class CookieAuthenticationStateProvider(IHttpClientFactory clientFactory) : AuthenticationStateProvider, ICookieAuthenticationStateProvider
+public class CookieAuthenticationStateProvider(IHttpClientFactory clientFactory)
+    : AuthenticationStateProvider, ICookieAuthenticationStateProvider
 {
     private readonly HttpClient _client = clientFactory.CreateClient(Configuration.HttpClientName);
     private bool _isAuthenticated = false;
-    
+
     public async Task<bool> CheckAuthenticatedAsync()
     {
         await GetAuthenticationStateAsync();
@@ -23,30 +24,37 @@ public class CookieAuthenticationStateProvider(IHttpClientFactory clientFactory)
         _isAuthenticated = false;
         try
         {
-            var result = await _client.GetFromJsonAsync<Result<UserDto?>>("api/user/info");
-            if (result is not null)
+            var result = await _client.GetAsync("api/user/info");
+
+            if (!result.IsSuccessStatusCode)
+                return SetUnauthenticated();
+
+            var user = await result.Content.ReadFromJsonAsync<UserDto>();
+
+            if (user is null)
+                return SetUnauthenticated();
+
+            var claims = new Claim[]
             {
-                var claims = new[]
-                {
-                   new Claim(ClaimTypes.Name, $"{result.Value!.Firstname} {result.Value!.Lastname}"),
-                   new Claim(ClaimTypes.Email, result.Value.Email)
-                };
-                
-                var identity = new ClaimsIdentity(claims, "Cookies");
-                _isAuthenticated = true;
-                return new AuthenticationState(new ClaimsPrincipal(identity));
-            }
+                new(ClaimTypes.Name, $"{user.Firstname} {user.Lastname}"),
+                new(ClaimTypes.Email, user.Email)
+            };
+
+            var identity = new ClaimsIdentity(claims, "Cookies");
+            _isAuthenticated = true;
+            return new AuthenticationState(new ClaimsPrincipal(identity));
         }
         catch
         {
-            _isAuthenticated = false;
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+            return SetUnauthenticated();
         }
+    }
+
+    private AuthenticationState SetUnauthenticated()
+    {
         _isAuthenticated = false;
         return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
     }
-
     public void NotifyAuthenticationStateChanged() =>
         base.NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-    
 }

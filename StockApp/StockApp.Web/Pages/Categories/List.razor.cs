@@ -4,6 +4,7 @@ using StockApp.Domain.DTOs.Requests.Categories;
 using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Entities;
 using StockApp.Web.Components;
+using StockApp.Web.Extensions;
 using StockApp.Web.Services.Abstractions;
 
 namespace StockApp.Web.Pages.Categories;
@@ -34,7 +35,7 @@ public partial class ListCategoriesPage : ComponentBase
         {
             IsBusy = true;
             var result = await CategoryService.GetAllCategoriesAsync();
-            Categories = result.Value ?? [];
+            Categories = result.Value!.Data ?? [];
         }
         catch (Exception e)
         {
@@ -67,37 +68,47 @@ public partial class ListCategoriesPage : ComponentBase
         }
     }
 
-    public void OnDeleteButtonClickedAsync(long id, string title)
+    public async Task OnDeleteButtonClickedAsync(long id, string title)
     {
-    //     var result = await DialogService.ShowMessageBox(
-    //         "Atenção!",
-    //         $"Deseja excluir a categoria {title}?",
-    //         "Confirmar",
-    //         cancelText: "Cancelar");
-    //
-    //     if (result is true)
-    //         await OnDeleteAsync(id, title);
-    //
-    //     StateHasChanged();
+    var result = await DialogService.ShowMessageBox(
+        "Atenção!",
+        $"Deseja excluir a categoria {title}?",
+        "Confirmar",
+        cancelText: "Cancelar");
+    
+    if (result is true)
+        await OnDeleteAsync(id, title);
+    
+    StateHasChanged();
     }
 
-    // private async Task OnDeleteAsync(long id, string title)
-    // {
-    //     try
-    //     {
-    //         await Handler.DeleteAsync(new DeleteCategoryRequest { Id = id });
-    //         Categories.RemoveAll(c => c.Id == id);
-    //         Snackbar.Add($"Categoria {title} excluida com sucesso!", Severity.Success);
-    //     }
-    //     catch
-    //     {
-    //         Snackbar.Add("Erro inesperado. Não foi possível excluir a categoria.", Severity.Error);
-    //     }
-    //     finally
-    //     {
-    //         IsBusy = false;
-    //     }
-    // }
+    private async Task OnDeleteAsync(long id, string title)
+    {
+        try
+        {
+            var result = await CategoryService.DeleteAsync(id);
+            if (result.IsSuccess)
+            {
+                Categories.RemoveAll(c => c.Id == id);
+                Snackbar.Add($"Categoria '{title}' excluida com sucesso!", Severity.Success);
+            }
+            else
+            {
+                foreach (var error in result.Error.Message.SplitErrors())
+                {
+                    Snackbar.Add(error, Severity.Error);
+                }
+            }
+        }
+        catch
+        {
+            Snackbar.Add("Ocorreu um erro inesperado durante a exclusão da categoria.", Severity.Error);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
     //
     // public Func<Category, bool> Filter => category =>
     // {

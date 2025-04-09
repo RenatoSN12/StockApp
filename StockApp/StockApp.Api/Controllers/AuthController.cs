@@ -25,7 +25,7 @@ namespace StockApp.Api.Controllers
 
             await SignInUserAsync(result.Value);
 
-            return Ok(result);
+            return Ok(result.Value);
         }
 
         [HttpPost("register")]
@@ -38,7 +38,7 @@ namespace StockApp.Api.Controllers
             
             await SignInUserAsync(result.Value);
             
-            return Ok(result);
+            return Ok(result.Value);
         }
         
         [Authorize]

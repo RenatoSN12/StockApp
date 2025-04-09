@@ -10,13 +10,14 @@ namespace StockApp.Web.Services.Implementations;
 
 public class AuthService(IHttpClientFactory httpClientFactory) : IAuthService
 {
-    private HttpClient _httpClient = httpClientFactory.CreateClient(Configuration.HttpClientName);
+    private readonly HttpClient _httpClient = httpClientFactory.CreateClient(Configuration.HttpClientName);
     public async Task<Result> LoginAsync(LoginRequest request)
     {
         var result = await _httpClient.PostAsJsonAsync("api/auth/login", request);
-        return result.IsSuccessStatusCode
-            ? Result.Success("Login realizado com sucesso")
-            : Result.Failure(new Error("500", "Não foi possível realizar o login"));
+        if (result.IsSuccessStatusCode)
+            Result.Success("Login realizado com sucesso");
+        
+        return await ErrorManager.ErrorResponse(result); 
     }
 
     public async Task LogoutAsync()
@@ -32,7 +33,6 @@ public class AuthService(IHttpClientFactory httpClientFactory) : IAuthService
        if (result.IsSuccessStatusCode)
            return Result.Success("Login realizado com sucesso");
        
-       var errorResponse = await ErrorManager.ExtractErrorResponse(result);
-       return Result.Failure(new Error(errorResponse.Code, errorResponse.Message));
+       return await ErrorManager.ErrorResponse(result); 
     }
 }

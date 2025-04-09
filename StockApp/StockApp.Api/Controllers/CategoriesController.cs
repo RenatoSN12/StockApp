@@ -6,6 +6,7 @@ using StockApp.Application.UseCases.Categories.Create;
 using StockApp.Application.UseCases.Categories.Delete;
 using StockApp.Application.UseCases.Categories.GetAll;
 using StockApp.Domain.DTOs.Requests.Categories;
+using StockApp.Domain.DTOs.Responses;
 
 namespace StockApp.Api.Controllers;
 
@@ -22,8 +23,8 @@ public class CategoriesController(ISender sender) : ControllerBase
         var result = await sender.Send(query);
 
         return result.IsSuccess
-            ? Ok(result)
-            : BadRequest(result);
+            ? Ok(result.Value)
+            : BadRequest(result.Error);
     }
 
     [HttpPost]
@@ -34,8 +35,8 @@ public class CategoriesController(ISender sender) : ControllerBase
         
         var result = await sender.Send(command);
         return result.IsSuccess
-            ? Ok(result)
-            : BadRequest(result);
+            ? Ok(result.Value)
+            : BadRequest(result.Error);
     }
 
     [HttpDelete("{id:int}")]
@@ -47,7 +48,7 @@ public class CategoriesController(ISender sender) : ControllerBase
         var result = await sender.Send(command);
         
         return result.IsSuccess
-            ? Ok(result)
-            : BadRequest(result);
+            ? Ok()
+            : BadRequest(result.Error);
     }
 }

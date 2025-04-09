@@ -11,42 +11,44 @@ public class CategoryService(IHttpClientFactory httpClientFactory) : ICategorySe
 {
     private readonly HttpClient _httpClient = httpClientFactory.CreateClient(Configuration.HttpClientName);
 
-    public async Task<PagedResult<List<CategoryDto>?>> GetAllCategoriesAsync(CancellationToken cancellationToken = default)
+    public async Task<Result<PagedResponse<List<CategoryDto>>>> GetAllCategoriesAsync(
+        CancellationToken cancellationToken = default)
     {
-        var result = await _httpClient.GetFromJsonAsync<PagedResult<List<CategoryDto>?>>("/api/categories", cancellationToken);
-        
-        if (result is null)
-            return PagedResult<List<CategoryDto>?>.Failure(new Error("500", "Ocorreu um erro inesperado ao obter as categorias."));
-            
-        return result.IsFailure 
-            ? PagedResult<List<CategoryDto>?>.Failure(result.Error) 
-            : result;
+        var response = await _httpClient.GetAsync("api/categories", cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+            return await ErrorManager.ErrorPagedResponse<PagedResponse<List<CategoryDto>>>(response);
+
+        var data = await response.Content
+            .ReadFromJsonAsync<PagedResponse<List<CategoryDto>>>(cancellationToken: cancellationToken);
+
+        return Result<PagedResponse<List<CategoryDto>>>.Success(data!);
     }
 
-    public async Task<Result<CategoryDto?>> CreateCategoryAsync(CreateCategoryDto request, CancellationToken cancellationToken = default)
+    public async Task<Result<CategoryDto?>> CreateCategoryAsync(CreateCategoryDto request,
+        CancellationToken cancellationToken = default)
     {
         var result = await _httpClient.PostAsJsonAsync("/api/categories", request, cancellationToken);
-        
-         var readResult = await result.Content.ReadFromJsonAsync<Result<CategoryDto?>>(cancellationToken: cancellationToken);
 
-         if (readResult is null)
-            return Result.Failure<CategoryDto?>(new Error("400", "Ocorreu um erro inesperado ao criar a nova categoria."));
-        
-        return readResult.IsFailure 
-            ? Result.Failure<CategoryDto?>(readResult.Error) 
+        var readResult =
+            await result.Content.ReadFromJsonAsync<Result<CategoryDto?>>(cancellationToken: cancellationToken);
+
+        if (readResult is null)
+            return Result.Failure<CategoryDto?>(new Error("400",
+                "Ocorreu um erro inesperado ao criar a nova categoria."));
+
+        return readResult.IsFailure
+            ? Result.Failure<CategoryDto?>(readResult.Error)
             : readResult;
     }
 
-    public async Task<Result> DeleteCategoryAsync(int id, CancellationToken cancellationToken = default)
+    public async Task<Result> DeleteAsync(long id, CancellationToken cancellationToken = default)
     {
         var result = await _httpClient.DeleteAsync($"/api/categories/{id}", cancellationToken);
-        var readResult = await result.Content.ReadFromJsonAsync<Result>(cancellationToken: cancellationToken);
-        
-        if (readResult is null)
-            return Result.Failure<CategoryDto?>(new Error("400", "Ocorreu um erro inesperado ao deletar a categoria."));
-        
-        return readResult.IsFailure 
-            ? Result.Failure(readResult.Error) 
-            : readResult;
+
+        if (result.IsSuccessStatusCode)
+            return Result.Success("Categoria excluída com sucesso.");
+
+        return await ErrorManager.ErrorResponse(result);
     }
 }
