@@ -33,11 +33,9 @@ public class CategoryService(IHttpClientFactory httpClientFactory) : ICategorySe
         if (!result.IsSuccessStatusCode)
             return await ErrorManager.CreateTypedFailureFromResponse<CategoryDto?>(result);
         
-        var readResult = await result.Content.ReadFromJsonAsync<Result<CategoryDto?>>(cancellationToken);
+        var readResult = await result.Content.ReadFromJsonAsync<CategoryDto?>(cancellationToken);
 
-        return readResult!.IsFailure
-            ? Result.Failure<CategoryDto?>(readResult.Error)
-            : readResult;
+        return Result<CategoryDto?>.Success(readResult);
     }
 
     public async Task<Result> DeleteAsync(long id, CancellationToken cancellationToken = default)
@@ -57,10 +55,8 @@ public class CategoryService(IHttpClientFactory httpClientFactory) : ICategorySe
         if (!result.IsSuccessStatusCode)
             return await ErrorManager.CreateTypedFailureFromResponse<CategoryDto?>(result);
         
-        var readResult = await result.Content.ReadFromJsonAsync<Result<CategoryDto?>>(cancellationToken);
+        var readResult = await result.Content.ReadFromJsonAsync<CategoryDto?>(cancellationToken);
         
-        return readResult!.IsFailure
-            ? Result.Failure<CategoryDto?>(readResult.Error)
-            : readResult;
+        return Result<CategoryDto?>.Success(readResult);
     }
 }

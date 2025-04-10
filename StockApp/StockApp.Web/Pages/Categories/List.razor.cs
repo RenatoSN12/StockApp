@@ -109,6 +109,25 @@ public partial class ListCategoriesPage : ComponentBase
             IsBusy = false;
         }
     }
+
+    protected async Task OnEditButtonClickedAsync(CategoryDto category)
+    {
+        var parameters = new DialogParameters<UpdateCategoryDialog> {{"Category", category},{"Id", category.Id}};
+        
+        var options = new DialogOptions { CloseOnEscapeKey = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        
+        var dialog = await DialogService.ShowAsync<UpdateCategoryDialog>($"{category.Title}", parameters, options);
+        var result = await dialog.Result;
+
+        if (!result!.Canceled && result.Data is CategoryDto updateCategory)
+        {
+            Categories.RemoveAll(c => c.Id == updateCategory.Id);
+            Categories.Add(updateCategory);
+            Snackbar.Add($"Categoria '{updateCategory.Title}' atualizada com sucesso!", Severity.Success);
+            StateHasChanged();
+        }
+    }
+    
     //
     // public Func<Category, bool> Filter => category =>
     // {
