@@ -45,13 +45,13 @@ public static class ErrorManager
             };
         }
     }
-    public static async Task<Result> ErrorResponse(HttpResponseMessage response)
+    public static async Task<Result> CreateFailureFromResponse(HttpResponseMessage response)
     {
         var errorResponse = await ExtractErrorResponse(response);
         return Result.Failure(new Error(errorResponse.Code, errorResponse.Message));
     }
     
-    public static async Task<Result<T>> ErrorPagedResponse<T>(HttpResponseMessage response)
+    public static async Task<Result<T>> CreateTypedFailureFromResponse<T>(HttpResponseMessage response)
     {
         var errorResponse = await ExtractErrorResponse(response);
         return Result<T>.Failure(new Error(errorResponse.Code, errorResponse.Message));

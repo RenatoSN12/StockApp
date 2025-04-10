@@ -22,10 +22,6 @@ public class CategoryMap : IEntityTypeConfiguration<Category>
             .HasColumnType("NVARCHAR")
             .HasMaxLength(500);
 
-        builder.Property(x => x.Status)
-            .IsRequired()
-            .HasColumnType("SMALLINT");
-        
         builder.Property(x => x.UserId)
             .IsRequired()
             .HasColumnType("VARCHAR")

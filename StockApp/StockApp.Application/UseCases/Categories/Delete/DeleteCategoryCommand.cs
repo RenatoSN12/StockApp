@@ -4,4 +4,4 @@ using StockApp.Domain.DTOs.Requests.Categories;
 
 namespace StockApp.Application.UseCases.Categories.Delete;
 
-public sealed record DeleteCategoryCommand(string UserId, int Id) : IRequest<Result>;
+public sealed record DeleteCategoryCommand(string UserId, int Id) : CommandBase<Result>(UserId);

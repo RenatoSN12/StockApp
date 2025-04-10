@@ -1,3 +1,3 @@
 namespace StockApp.Domain.DTOs.Responses;
 
-public sealed record CategoryDto(long Id, string Title);
+public sealed record CategoryDto(long Id, string Title, string Description);

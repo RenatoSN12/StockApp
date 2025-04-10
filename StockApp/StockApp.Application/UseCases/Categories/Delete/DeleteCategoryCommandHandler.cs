@@ -20,7 +20,7 @@ public sealed class DeleteCategoryCommandHandler(ICategoryRepository repository,
             if (category == null)
                 return Result.Failure(new Error("404", "Categoria não encontrada."));
 
-            repository.Remove(category, cancellationToken);
+            repository.Remove(category);
 
             await unitOfWork.CommitAsync(cancellationToken);
 

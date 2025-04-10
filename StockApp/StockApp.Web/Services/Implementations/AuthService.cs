@@ -17,7 +17,7 @@ public class AuthService(IHttpClientFactory httpClientFactory) : IAuthService
         if (result.IsSuccessStatusCode)
             Result.Success("Login realizado com sucesso");
         
-        return await ErrorManager.ErrorResponse(result); 
+        return await ErrorManager.CreateFailureFromResponse(result); 
     }
 
     public async Task LogoutAsync()
@@ -33,6 +33,6 @@ public class AuthService(IHttpClientFactory httpClientFactory) : IAuthService
        if (result.IsSuccessStatusCode)
            return Result.Success("Login realizado com sucesso");
        
-       return await ErrorManager.ErrorResponse(result); 
+       return await ErrorManager.CreateFailureFromResponse(result); 
     }
 }

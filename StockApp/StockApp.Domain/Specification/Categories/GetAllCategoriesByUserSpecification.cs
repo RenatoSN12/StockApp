@@ -8,5 +8,5 @@ namespace StockApp.Domain.Specification.Categories;
 public sealed class GetAllCategoriesByUserSpecification(string email) : Specification<Category>
 {
     public override Expression<Func<Category, bool>> ToExpression()
-        => category => category.UserId == email && category.Status == EStatus.Active;    
+        => category => category.UserId == email;
 }

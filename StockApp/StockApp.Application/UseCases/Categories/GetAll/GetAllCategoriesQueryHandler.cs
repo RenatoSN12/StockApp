@@ -22,7 +22,7 @@ public sealed class GetAllCategoriesQueryHandler(ICategoryRepository repository)
             var totalCount = await repository.GetTotalCount(spec, cancellationToken);
 
             var categoriesDto = categories
-                .Select(x => new CategoryDto(x.Id, x.Title))
+                .Select(x => new CategoryDto(x.Id, x.Title, x.Description))
                 .ToList();
 
             var response =

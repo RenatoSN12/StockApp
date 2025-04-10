@@ -17,7 +17,7 @@ public class CategoryService(IHttpClientFactory httpClientFactory) : ICategorySe
         var response = await _httpClient.GetAsync("api/categories", cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-            return await ErrorManager.ErrorPagedResponse<PagedResponse<List<CategoryDto>>>(response);
+            return await ErrorManager.CreateTypedFailureFromResponse<PagedResponse<List<CategoryDto>>>(response);
 
         var data = await response.Content
             .ReadFromJsonAsync<PagedResponse<List<CategoryDto>>>(cancellationToken: cancellationToken);
@@ -30,14 +30,12 @@ public class CategoryService(IHttpClientFactory httpClientFactory) : ICategorySe
     {
         var result = await _httpClient.PostAsJsonAsync("/api/categories", request, cancellationToken);
 
-        var readResult =
-            await result.Content.ReadFromJsonAsync<Result<CategoryDto?>>(cancellationToken: cancellationToken);
+        if (!result.IsSuccessStatusCode)
+            return await ErrorManager.CreateTypedFailureFromResponse<CategoryDto?>(result);
+        
+        var readResult = await result.Content.ReadFromJsonAsync<Result<CategoryDto?>>(cancellationToken);
 
-        if (readResult is null)
-            return Result.Failure<CategoryDto?>(new Error("400",
-                "Ocorreu um erro inesperado ao criar a nova categoria."));
-
-        return readResult.IsFailure
+        return readResult!.IsFailure
             ? Result.Failure<CategoryDto?>(readResult.Error)
             : readResult;
     }
@@ -49,6 +47,20 @@ public class CategoryService(IHttpClientFactory httpClientFactory) : ICategorySe
         if (result.IsSuccessStatusCode)
             return Result.Success("Categoria excluída com sucesso.");
 
-        return await ErrorManager.ErrorResponse(result);
+        return await ErrorManager.CreateFailureFromResponse(result);
+    }
+
+    public async Task<Result<CategoryDto?>> UpdateAsync(long id, UpdateCategoryDto request, CancellationToken cancellationToken = default)
+    {
+        var result = await _httpClient.PutAsJsonAsync($"/api/categories/{id}", request, cancellationToken);
+        
+        if (!result.IsSuccessStatusCode)
+            return await ErrorManager.CreateTypedFailureFromResponse<CategoryDto?>(result);
+        
+        var readResult = await result.Content.ReadFromJsonAsync<Result<CategoryDto?>>(cancellationToken);
+        
+        return readResult!.IsFailure
+            ? Result.Failure<CategoryDto?>(readResult.Error)
+            : readResult;
     }
 }

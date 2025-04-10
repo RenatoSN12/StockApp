@@ -4,7 +4,6 @@ using StockApp.Domain.Abstractions.Interfaces;
 using StockApp.Domain.Abstractions.Results;
 using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Entities;
-using StockApp.Domain.Enums;
 using StockApp.Domain.Repositories;
 
 namespace StockApp.Application.UseCases.Categories.Create;
@@ -20,14 +19,13 @@ public sealed class CreateCategoryCommandHandler(ICategoryRepository repository,
             {
                 Description = request.CreateCategoryDto.Description,
                 Title = request.CreateCategoryDto.Title,
-                Status = EStatus.Active,
                 UserId = request.UserId
             };
 
             await repository.AddAsync(category, cancellationToken);
             await unitOfWork.CommitAsync(cancellationToken);
 
-            return Result<CategoryDto>.Success(new CategoryDto(category.Id, category.Title));
+            return Result<CategoryDto>.Success(new CategoryDto(category.Id, category.Title, category.Description));
         }
         catch
         {

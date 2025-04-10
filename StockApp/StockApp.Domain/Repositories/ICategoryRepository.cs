@@ -9,5 +9,6 @@ public interface ICategoryRepository : IRepository<Category>
         int pageSize, CancellationToken cancellationToken = default);
     Task<Category?> GetById(GetCategoryByIdSpecification specification, bool asNoTracking,CancellationToken cancellationToken);
     Task AddAsync(Category category,CancellationToken cancellationToken);
-    void Remove(Category category,CancellationToken cancellationToken);
+    void Remove(Category category);
+    void Update(Category category);
 }

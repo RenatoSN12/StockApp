@@ -5,6 +5,7 @@ using StockApp.Api.Common.Extensions;
 using StockApp.Application.UseCases.Categories.Create;
 using StockApp.Application.UseCases.Categories.Delete;
 using StockApp.Application.UseCases.Categories.GetAll;
+using StockApp.Application.UseCases.Categories.Update;
 using StockApp.Domain.DTOs.Requests.Categories;
 using StockApp.Domain.DTOs.Responses;
 
@@ -51,4 +52,18 @@ public class CategoriesController(ISender sender) : ControllerBase
             ? Ok()
             : BadRequest(result.Error);
     }
+
+    [HttpPut("{id:int}")]
+    public async Task<IActionResult> Update(int id, [FromBody] UpdateCategoryDto request)
+    {
+        var userId = HttpContext.GetUserEmail();
+        var command = new UpdateCategoryCommand(request, id, userId);
+        
+        var result = await sender.Send(command);
+        
+        return result.IsSuccess
+            ? Ok(result.Value)
+            : BadRequest(result.Error);
+    }
+    
 }
