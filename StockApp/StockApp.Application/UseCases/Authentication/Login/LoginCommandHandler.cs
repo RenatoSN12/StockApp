@@ -1,4 +1,5 @@
 using MediatR;
+using StockApp.Application.UseCases.Abstractions;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
 using StockApp.Domain.Abstractions.Results;
@@ -8,14 +9,15 @@ using StockApp.Domain.Specification.Users;
 
 namespace StockApp.Application.UseCases.Authentication.Login;
 
-public class LoginCommandHandler(IUserRepository repository,
+public class LoginCommandHandler(
+    IUserRepository repository,
     IPasswordHasher passwordHasher,
     LoginCommandValidator validator)
-    : IRequestHandler<LoginCommand, Result<UserDto>>
+    : IRequestHandler<LoginCommand, Result<UserDto>>, IValidatableHandler<LoginCommand>
 {
     public async Task<Result<UserDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await ValidateRequest(request, cancellationToken);
+        var validationResult = await ValidateRequestAsync(request, cancellationToken);
         if (validationResult.IsFailure)
             return Result.Failure<UserDto>(validationResult.Error);
 
@@ -27,12 +29,12 @@ public class LoginCommandHandler(IUserRepository repository,
 
         return Result.Success(new UserDto(user.Fullname.FirstName, user.Fullname.LastName, user.Email));
     }
-
-    private async Task<Result> ValidateRequest(LoginCommand request, CancellationToken cancellationToken)
+    
+    public async Task<Result> ValidateRequestAsync(LoginCommand request, CancellationToken cancellationToken)
     {
         var result = await validator.ValidateAsync(request, cancellationToken);
-        return !result.IsValid 
-            ? Result.Failure(new Error("400", string.Join("\n", result.Errors.Select(e => e.ErrorMessage)))) 
+        return !result.IsValid
+            ? Result.Failure(new Error("400", string.Join("\n", result.Errors.Select(e => e.ErrorMessage))))
             : Result.Success();
     }
 }

@@ -1,5 +1,6 @@
 using FluentValidation.Results;
 using MediatR;
+using StockApp.Application.UseCases.Abstractions;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
 using StockApp.Domain.Abstractions.Results;
@@ -16,18 +17,19 @@ public class RegisterCommandHandler(
     IUserRepository repository,
     IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork,
-    RegisterCommandValidator validator) : IRequestHandler<RegisterCommand, Result<UserDto>>
+    RegisterCommandValidator validator)
+    : IRequestHandler<RegisterCommand, Result<UserDto>>, IValidatableHandler<RegisterCommand>
 {
     public async Task<Result<UserDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
-        var validationResult = await ValidateRequest(request, cancellationToken);
+        var validationResult = await ValidateRequestAsync(request, cancellationToken);
         if (!validationResult.IsSuccess)
             return Result.Failure<UserDto>(validationResult.Error);
-        
+
         var fullnameResult = Fullname.Create(request.FirstName, request.LastName);
         if (!fullnameResult.IsSuccess || fullnameResult.Value is null)
             return Result.Failure<UserDto>(fullnameResult.Error);
-        
+
         var user = new User
         {
             Fullname = fullnameResult.Value,
@@ -37,12 +39,20 @@ public class RegisterCommandHandler(
         };
 
         await repository.AddAsync(user, cancellationToken);
-        await unitOfWork.CommitAsync();
+        await unitOfWork.CommitAsync(cancellationToken);
 
         return Result.Create(new UserDto(user.Fullname.FirstName, user.Fullname.LastName, user.Email));
     }
 
-    private async Task<Result> ValidateRequest(RegisterCommand request, CancellationToken cancellationToken)
+    private async Task<bool> EmailExists(string email, CancellationToken cancellationToken)
+    {
+        var spec = new GetUserByEmailSpecification(email);
+        var user = await repository.GetUserBySpecificationAsync(spec, cancellationToken);
+
+        return user != null;
+    }
+
+    public async Task<Result> ValidateRequestAsync(RegisterCommand request, CancellationToken cancellationToken)
     {
         var result = await validator.ValidateAsync(request, cancellationToken);
 
@@ -54,13 +64,5 @@ public class RegisterCommandHandler(
             return Result.Failure(new Error("400", "E-mail já está em uso."));
 
         return Result.Success();
-    }
-
-    private async Task<bool> EmailExists(string email, CancellationToken cancellationToken)
-    {
-        var spec = new GetUserByEmailSpecification(email);
-        var user = await repository.GetUserBySpecificationAsync(spec, cancellationToken);
-
-        return user != null;
     }
 }

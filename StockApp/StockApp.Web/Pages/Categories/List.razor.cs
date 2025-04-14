@@ -128,24 +128,22 @@ public partial class ListCategoriesPage : ComponentBase
         }
     }
     
-    //
-    // public Func<Category, bool> Filter => category =>
-    // {
-    //     if (string.IsNullOrEmpty(SearchTerm))
-    //         return true;
-    //
-    //     if (category.Id.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
-    //         return true;
-    //
-    //     if (category.Title.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
-    //         return true;
-    //
-    //     if (category.Description is not null &&
-    //         category.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
-    //         return true;
-    //
-    //     return false;
-    // };
+    public Func<CategoryDto, bool> Filter => category =>
+    {
+        if (string.IsNullOrEmpty(SearchTerm))
+            return true;
+    
+        if (category.Id.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+            return true;
+    
+        if (category.Title.ToString().Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+            return true;
+    
+        if (category.Description.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase))
+            return true;
+    
+        return false;
+    };
 
     #endregion
 }
