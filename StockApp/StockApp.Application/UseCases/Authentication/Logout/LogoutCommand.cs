@@ -1,6 +1,6 @@
 using MediatR;
 using StockApp.Domain.Abstractions;
-using StockApp.Domain.Abstractions.Results;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Authentication.Logout;
 

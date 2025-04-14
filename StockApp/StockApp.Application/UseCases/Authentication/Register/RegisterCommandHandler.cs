@@ -1,15 +1,17 @@
 using FluentValidation.Results;
 using MediatR;
+using StockApp.Application.Abstractions.Security;
+using StockApp.Application.DTOs.Responses.Authentication;
 using StockApp.Application.UseCases.Abstractions;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
-using StockApp.Domain.Abstractions.Results;
 using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Enums;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Users;
 using StockApp.Domain.ValueObjects;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Authentication.Register;
 
@@ -18,7 +20,7 @@ public class RegisterCommandHandler(
     IPasswordHasher passwordHasher,
     IUnitOfWork unitOfWork,
     RegisterCommandValidator validator)
-    : IRequestHandler<RegisterCommand, Result<UserDto>>, IValidatableHandler<RegisterCommand>
+    : HandlerWithValidation<RegisterCommand>(validator),IRequestHandler<RegisterCommand, Result<UserDto>>
 {
     public async Task<Result<UserDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
@@ -52,7 +54,7 @@ public class RegisterCommandHandler(
         return user != null;
     }
 
-    public async Task<Result> ValidateRequestAsync(RegisterCommand request, CancellationToken cancellationToken)
+    public override async Task<Result> ValidateRequestAsync(RegisterCommand request, CancellationToken cancellationToken = default)
     {
         var result = await validator.ValidateAsync(request, cancellationToken);
 

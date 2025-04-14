@@ -1,6 +1,8 @@
-using StockApp.Domain.Abstractions.Results;
-using StockApp.Domain.DTOs.Requests.Categories;
+using StockApp.Application.DTOs.Requests.Categories;
+using StockApp.Application.DTOs.Responses;
+using StockApp.Application.DTOs.Responses.Categories;
 using StockApp.Domain.DTOs.Responses;
+using StockApp.Shared;
 
 namespace StockApp.Web.Services.Abstractions;
 

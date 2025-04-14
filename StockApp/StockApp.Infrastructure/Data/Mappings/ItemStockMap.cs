@@ -18,7 +18,7 @@ public class ItemStockMap : IEntityTypeConfiguration<ItemStock>
         builder.Property(x=> x.LastUpdatedDate).IsRequired().HasColumnType("DATETIME2");
         builder.Property(x => x.UserId).IsRequired().HasColumnType("VARCHAR").HasMaxLength(80);
 
-        builder.HasOne(x => x.Item).WithMany().HasForeignKey(x => x.ItemId);
+        builder.HasOne(x => x.Product).WithMany().HasForeignKey(x => x.ItemId);
         builder.HasOne(x=> x.Location).WithMany().HasForeignKey(i => i.ItemId);;
         
         builder.HasIndex(x=> new {x.LocationId,x.ItemId}).IsUnique();

@@ -1,7 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using StockApp.Domain.Abstractions;
+using StockApp.Application.Abstractions.Security;
 using StockApp.Domain.Abstractions.Interfaces;
 using StockApp.Domain.Repositories;
+using StockApp.Domain.Repositories.Products;
 using StockApp.Infrastructure.Data;
 using StockApp.Infrastructure.Repositories;
 using StockApp.Infrastructure.Services;
@@ -16,6 +17,7 @@ public static class DependencyInjection
         services.AddTransient<IUserRepository, UserRepository>();
         services.AddTransient<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
         return services;
     }
 }

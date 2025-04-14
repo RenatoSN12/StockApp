@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StockApp.Application.DTOs.Responses.Authentication;
 using StockApp.Application.UseCases.Authentication.GetUserInfo;
 using StockApp.Application.UseCases.Authentication.Login;
 using StockApp.Application.UseCases.Authentication.Logout;

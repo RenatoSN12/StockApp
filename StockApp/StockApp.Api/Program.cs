@@ -14,7 +14,6 @@ builder.Services.AddDbContext<AppDbContext>(x =>
         => b.MigrationsAssembly("StockApp.Api"));
 });
 
-// builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddAuthenticationSetup();
 builder.Services.AddValidation();
 builder.Services.AddSwaggerDocumentation();

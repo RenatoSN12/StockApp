@@ -1,9 +1,11 @@
 using MediatR;
+using StockApp.Application.DTOs.Responses;
+using StockApp.Application.DTOs.Responses.Categories;
 using StockApp.Domain.Abstractions;
-using StockApp.Domain.Abstractions.Results;
 using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Categories;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Categories.GetAll;
 

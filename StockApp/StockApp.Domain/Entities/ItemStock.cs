@@ -4,7 +4,7 @@ namespace StockApp.Domain.Entities;
 public class ItemStock : Entity
 {
     public long ItemId { get; set; }
-    public Item Item { get; set; } = null!;
+    public Product Product { get; set; } = null!;
 
     public Location Location { get; set; } = null!;
     public long LocationId { get; set; }

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using StockApp.Domain.DTOs.Requests.Categories;
+using StockApp.Application.DTOs.Requests.Categories;
 using StockApp.Web.Extensions;
 using StockApp.Web.Services.Abstractions;
 

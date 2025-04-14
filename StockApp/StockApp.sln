@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockApp.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockApp.Domain", "StockApp.Domain\StockApp.Domain.csproj", "{580D1CDE-D526-47D2-9B4A-41CAFBD4F64E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockApp.Shared", "StockApp.Shared\StockApp.Shared.csproj", "{D80FFE36-CFDF-42F4-8FCA-BDBAE662E2A9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{580D1CDE-D526-47D2-9B4A-41CAFBD4F64E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{580D1CDE-D526-47D2-9B4A-41CAFBD4F64E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{580D1CDE-D526-47D2-9B4A-41CAFBD4F64E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D80FFE36-CFDF-42F4-8FCA-BDBAE662E2A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D80FFE36-CFDF-42F4-8FCA-BDBAE662E2A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D80FFE36-CFDF-42F4-8FCA-BDBAE662E2A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D80FFE36-CFDF-42F4-8FCA-BDBAE662E2A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

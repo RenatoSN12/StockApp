@@ -7,9 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\" />
     <Folder Include="Entities\" />
     <Folder Include="Enums\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StockApp.Shared\StockApp.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="StockApp.Domain">
+      <HintPath>..\StockApp.Api\bin\Debug\net9.0\StockApp.Domain.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using StockApp.Domain.Abstractions;
-using StockApp.Domain.Abstractions.Results;
+using StockApp.Shared;
 using StockApp.Web.Extensions;
 
 namespace StockApp.Web.Services;

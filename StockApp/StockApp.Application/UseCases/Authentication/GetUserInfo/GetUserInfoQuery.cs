@@ -1,6 +1,7 @@
+using StockApp.Application.DTOs.Responses.Authentication;
 using StockApp.Application.UseCases.Categories;
-using StockApp.Domain.Abstractions.Results;
 using StockApp.Domain.DTOs.Responses;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Authentication.GetUserInfo;
 

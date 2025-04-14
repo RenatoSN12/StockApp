@@ -1,12 +1,12 @@
 using FluentValidation;
 using StockApp.Domain.Abstractions;
-using StockApp.Domain.Abstractions.Results;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Abstractions;
 
-public abstract class HandlerWithValidation<TRequest>(IValidator<TRequest> validator)
+public abstract class HandlerWithValidation<TRequest>(IValidator<TRequest> validator) : IValidatableHandler<TRequest>
 {
-    protected virtual async Task<Result> ValidateRequestAsync(TRequest request, CancellationToken cancellationToken = default)
+    public virtual async Task<Result> ValidateRequestAsync(TRequest request, CancellationToken cancellationToken = default)
     {
         var result = await validator.ValidateAsync(request, cancellationToken);
 

@@ -1,8 +1,10 @@
 using System.Net.Http.Json;
+using StockApp.Application.DTOs.Requests.Categories;
+using StockApp.Application.DTOs.Responses;
+using StockApp.Application.DTOs.Responses.Categories;
 using StockApp.Domain.Abstractions;
-using StockApp.Domain.Abstractions.Results;
-using StockApp.Domain.DTOs.Requests.Categories;
 using StockApp.Domain.DTOs.Responses;
+using StockApp.Shared;
 using StockApp.Web.Services.Abstractions;
 
 namespace StockApp.Web.Services.Implementations;

@@ -1,11 +1,13 @@
 using MediatR;
+using StockApp.Application.Abstractions.Security;
+using StockApp.Application.DTOs.Responses.Authentication;
 using StockApp.Application.UseCases.Abstractions;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
-using StockApp.Domain.Abstractions.Results;
 using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Users;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Authentication.Login;
 
@@ -13,7 +15,7 @@ public class LoginCommandHandler(
     IUserRepository repository,
     IPasswordHasher passwordHasher,
     LoginCommandValidator validator)
-    : IRequestHandler<LoginCommand, Result<UserDto>>, IValidatableHandler<LoginCommand>
+    : HandlerWithValidation<LoginCommand>(validator),IRequestHandler<LoginCommand, Result<UserDto>>
 {
     public async Task<Result<UserDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
@@ -28,13 +30,5 @@ public class LoginCommandHandler(
             return Result.Failure<UserDto>(new Error("401", "Credenciais inválidas."));
 
         return Result.Success(new UserDto(user.Fullname.FirstName, user.Fullname.LastName, user.Email));
-    }
-    
-    public async Task<Result> ValidateRequestAsync(LoginCommand request, CancellationToken cancellationToken)
-    {
-        var result = await validator.ValidateAsync(request, cancellationToken);
-        return !result.IsValid
-            ? Result.Failure(new Error("400", string.Join("\n", result.Errors.Select(e => e.ErrorMessage))))
-            : Result.Success();
     }
 }

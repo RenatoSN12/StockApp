@@ -1,6 +1,5 @@
 using MediatR;
-using StockApp.Domain.Abstractions.Results;
-using StockApp.Domain.DTOs.Requests.Categories;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Categories.Delete;
 

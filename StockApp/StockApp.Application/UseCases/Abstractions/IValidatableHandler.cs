@@ -1,4 +1,4 @@
-using StockApp.Domain.Abstractions.Results;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Abstractions;
 

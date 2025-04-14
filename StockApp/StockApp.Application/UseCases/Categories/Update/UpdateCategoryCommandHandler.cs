@@ -1,15 +1,20 @@
 using MediatR;
+using StockApp.Application.DTOs.Responses.Categories;
+using StockApp.Application.UseCases.Abstractions;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
-using StockApp.Domain.Abstractions.Results;
 using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Categories;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Categories.Update;
 
-public sealed class UpdateCategoryCommandHandler(ICategoryRepository repository, IUnitOfWork unitOfWork)
-    : IRequestHandler<UpdateCategoryCommand, Result<CategoryDto>>
+public sealed class UpdateCategoryCommandHandler(
+    ICategoryRepository repository,
+    IUnitOfWork unitOfWork,
+    UpdateCategoryValidator validator)
+    : HandlerWithValidation<UpdateCategoryCommand>(validator), IRequestHandler<UpdateCategoryCommand, Result<CategoryDto>>
 {
     public async Task<Result<CategoryDto>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -21,6 +26,10 @@ public sealed class UpdateCategoryCommandHandler(ICategoryRepository repository,
             if (category == null)
                 return Result<CategoryDto>.Failure(new Error("404", "Categoria não encontrada."));
 
+            var validationResult = await ValidateRequestAsync(request, cancellationToken);
+            if (validationResult.IsFailure)
+                return Result.Failure<CategoryDto>(validationResult.Error);
+            
             category.Title = request.Dto.Title;
             category.Description = request.Dto.Description;
 

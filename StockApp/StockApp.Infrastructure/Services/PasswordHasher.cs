@@ -1,5 +1,4 @@
-using StockApp.Domain.Abstractions;
-using StockApp.Domain.Abstractions.Interfaces;
+using StockApp.Application.Abstractions.Security;
 
 namespace StockApp.Infrastructure.Services;
 

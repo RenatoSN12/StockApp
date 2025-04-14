@@ -21,16 +21,6 @@ public static class ServicesExtensions
         services.AddApplication();
         services.AddInfrastructure();
     }
-
-    // public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
-    // {
-    //     services.AddDbContext<AppDbContext>(x =>
-    //     {
-    //         x.UseSqlServer(Configuration.ConnectionString, b
-    //             => b.MigrationsAssembly("StockApp.Api"));
-    //     });
-    // }
-
     public static void AddAuthenticationSetup(this IServiceCollection services)
     {
         services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

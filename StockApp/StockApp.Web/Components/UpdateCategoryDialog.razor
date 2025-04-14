@@ -3,8 +3,8 @@
 <EditForm Model="Model" OnValidSubmit="OnValidSubmitAsync">
     <MudDialog>
         <DialogContent>
-            <MudTextField Label="Nome da Categoria" @bind-Value="Model.Title" Required="true"/>
-            <MudTextField Label="Descrição" @bind-Value="Model.Description"/>
+            <MudTextField Label="Nome da Categoria" @bind-Value="Model.Title" Required="true" MaxLength="80"/>
+            <MudTextField Label="Descrição" @bind-Value="Model.Description" Required="true" MaxLength="500"/>
         </DialogContent>
         <DialogActions>
             <MudButton OnClick="Cancel">Cancelar</MudButton>

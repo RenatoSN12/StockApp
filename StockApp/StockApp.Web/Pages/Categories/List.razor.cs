@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using StockApp.Domain.DTOs.Requests.Categories;
+using StockApp.Application.DTOs.Requests.Categories;
+using StockApp.Application.DTOs.Responses.Categories;
 using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Entities;
 using StockApp.Web.Components;

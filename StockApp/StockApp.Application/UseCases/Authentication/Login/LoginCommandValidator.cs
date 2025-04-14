@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace StockApp.Application.UseCases.Authentication.Login;
 
-public class LoginCommandValidator : AbstractValidator<LoginCommand>
+public sealed class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
     public LoginCommandValidator()
     {

@@ -1,9 +1,9 @@
 using MediatR;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
-using StockApp.Domain.Abstractions.Results;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Categories;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Categories.Delete;
 

@@ -1,8 +1,8 @@
-using StockApp.Domain.Abstractions.Results;
-using StockApp.Domain.DTOs.Requests.Categories;
-using StockApp.Domain.DTOs.Responses;
+using StockApp.Application.DTOs.Requests.Categories;
+using StockApp.Application.DTOs.Responses.Categories;
+using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Categories.Create;
 
-public sealed record CreateCategoryCommand(string UserId, CreateCategoryDto CreateCategoryDto)
+public sealed record CreateCategoryCommand(string UserId, CreateCategoryDto Dto)
     : CommandBase<Result<CategoryDto>>(UserId);

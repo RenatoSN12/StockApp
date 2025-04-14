@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StockApp.Domain\StockApp.Domain.csproj" />
+    <ProjectReference Include="..\StockApp.Application\StockApp.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

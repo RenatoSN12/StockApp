@@ -51,58 +51,6 @@ namespace StockApp.Api.Migrations
                     b.ToTable("Category", (string)null);
                 });
 
-            modelBuilder.Entity("StockApp.Domain.Entities.Item", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("CategoryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("DATETIME2");
-
-                    b.Property<string>("CustomId")
-                        .HasMaxLength(20)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("NVARCHAR");
-
-                    b.Property<short>("IsActive")
-                        .HasColumnType("SMALLINT");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("MONEY");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("NVARCHAR");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("DATETIME2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasMaxLength(80)
-                        .HasColumnType("VARCHAR");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("CustomId")
-                        .IsUnique()
-                        .HasFilter("[CustomId] IS NOT NULL");
-
-                    b.ToTable("Item", (string)null);
-                });
-
             modelBuilder.Entity("StockApp.Domain.Entities.ItemStock", b =>
                 {
                     b.Property<long>("Id")
@@ -112,9 +60,6 @@ namespace StockApp.Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<long>("ItemId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("ItemId1")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("LastUpdatedDate")
@@ -140,8 +85,6 @@ namespace StockApp.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ItemId");
-
-                    b.HasIndex("ItemId1");
 
                     b.HasIndex("LocationId", "ItemId")
                         .IsUnique();
@@ -179,6 +122,63 @@ namespace StockApp.Api.Migrations
                     b.ToTable("Location", (string)null);
                 });
 
+            modelBuilder.Entity("StockApp.Domain.Entities.Product", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("CategoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("DATETIME2");
+
+                    b.Property<string>("CustomId")
+                        .HasMaxLength(20)
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("NVARCHAR");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("ImageUrl");
+
+                    b.Property<short>("IsActive")
+                        .HasColumnType("SMALLINT");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("MONEY");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("NVARCHAR");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("DATETIME2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("VARCHAR");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("CustomId")
+                        .IsUnique()
+                        .HasFilter("[CustomId] IS NOT NULL");
+
+                    b.ToTable("Product", (string)null);
+                });
+
             modelBuilder.Entity("StockApp.Domain.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -208,7 +208,26 @@ namespace StockApp.Api.Migrations
                     b.ToTable("User", (string)null);
                 });
 
-            modelBuilder.Entity("StockApp.Domain.Entities.Item", b =>
+            modelBuilder.Entity("StockApp.Domain.Entities.ItemStock", b =>
+                {
+                    b.HasOne("StockApp.Domain.Entities.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("StockApp.Domain.Entities.Product", "Product")
+                        .WithMany("Inventories")
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("StockApp.Domain.Entities.Product", b =>
                 {
                     b.HasOne("StockApp.Domain.Entities.Category", "Category")
                         .WithMany()
@@ -217,29 +236,6 @@ namespace StockApp.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("StockApp.Domain.Entities.ItemStock", b =>
-                {
-                    b.HasOne("StockApp.Domain.Entities.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StockApp.Domain.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("StockApp.Domain.Entities.Item", null)
-                        .WithMany("Inventories")
-                        .HasForeignKey("ItemId1");
-
-                    b.Navigation("Item");
-
-                    b.Navigation("Location");
                 });
 
             modelBuilder.Entity("StockApp.Domain.Entities.User", b =>
@@ -273,7 +269,7 @@ namespace StockApp.Api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("StockApp.Domain.Entities.Item", b =>
+            modelBuilder.Entity("StockApp.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Inventories");
                 });

@@ -4,8 +4,8 @@ using StockApp.Domain.Entities;
 
 namespace StockApp.Domain.Specification.Categories;
 
-public sealed class GetCategoryByIdSpecification(string userId, int id) : Specification<Category>
+public sealed record GetCategoryByIdSpecification(string UserId, long Id) : Specification<Category>
 {
     public override Expression<Func<Category, bool>> ToExpression()
-        => category => category.Id == id && category.UserId == userId;
+        => category => category.Id == Id && category.UserId == UserId;
 }

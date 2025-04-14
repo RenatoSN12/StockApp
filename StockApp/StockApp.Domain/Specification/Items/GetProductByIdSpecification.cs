@@ -4,8 +4,8 @@ using StockApp.Domain.Entities;
 
 namespace StockApp.Domain.Specification.Items;
 
-public class GetProductByIdSpecification(long id) : Specification<Item>
+public sealed record GetProductByIdSpecification(long Id) : Specification<Product>
 {
-    public override Expression<Func<Item, bool>> ToExpression()
-        => item => item.Id == id;    
+    public override Expression<Func<Product, bool>> ToExpression()
+        => item => item.Id == Id;    
 }
