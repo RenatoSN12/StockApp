@@ -5,7 +5,9 @@ using StockApp.Api.Common.Extensions;
 using StockApp.Application.DTOs.Requests.Products;
 using StockApp.Application.DTOs.Responses.Products;
 using StockApp.Application.UseCases.Products.Create;
-using StockApp.Domain.Specification.Items;
+using StockApp.Application.UseCases.Products.GetAll;
+using StockApp.Application.UseCases.Products.GetByCustomId;
+using StockApp.Shared;
 
 namespace StockApp.Api.Controllers;
 
@@ -20,19 +22,33 @@ public class ProductController(ISender sender) : ControllerBase
     {
         var userId = HttpContext.GetUserEmail();
 
-        var command = new CreateProductCommand(createProductDto, userId);
+        var command = new CreateProductCommandQuery(createProductDto, userId);
         
         var result = await sender.Send(command);
-        
-        return result.IsSuccess
-            ? Ok(result.Value)
-            : BadRequest(result.Error);
+
+        return result.ToActionResult();
     }
 
-    // [HttpGet]
-    // public async Task<ActionResult<ProductDto>> GetAll()
-    // {
-    //     var userId = HttpContext.GetUserEmail();
-    //     var specification = new Command(userId);
-    // }
+    [HttpGet]
+    public async Task<ActionResult<PagedResponse<List<ResumeProductDto>>>> GetAll([FromQuery] int pageNumber, [FromQuery] int pageSize)
+    {
+        var userId = HttpContext.GetUserEmail();
+        var query = new GetAllProductsQuery(userId, pageNumber, pageSize);
+        
+        var result = await sender.Send(query);
+
+        return result.ToActionResult();
+    }
+    
+    [HttpGet("{productId}")]
+    public async Task<ActionResult<ProductDto>> GetByCustomId(string productId)
+    {
+        var userId = HttpContext.GetUserEmail();
+        var query = new GetProductByCustomIdQuery(userId, productId);
+        
+        var result = await sender.Send(query);
+
+        return result.ToActionResult();
+    }
+    
 }

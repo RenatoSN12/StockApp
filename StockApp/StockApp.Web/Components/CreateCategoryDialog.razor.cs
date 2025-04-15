@@ -36,7 +36,7 @@ public partial class CreateCategoryDialogBase : ComponentBase
 
         try
         {
-            var result = await CategoryService.CreateCategoryAsync(Model);
+            var result = await CategoryService.CreateAsync(Model);
             if (result.IsSuccess)
                 MudDialog.Close(DialogResult.Ok(result.Value));
             else

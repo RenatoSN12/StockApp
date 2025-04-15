@@ -9,9 +9,9 @@ using StockApp.Shared;
 namespace StockApp.Application.UseCases.Products.Create;
 
 public class CreateProductCommandHandler(IProductRepository repository, IUnitOfWork unitOfWork)
-    : IRequestHandler<CreateProductCommand, Result<ProductDto>>
+    : IRequestHandler<CreateProductCommandQuery, Result<ProductDto>>
 {
-    public async Task<Result<ProductDto>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<Result<ProductDto>> Handle(CreateProductCommandQuery request, CancellationToken cancellationToken)
     {
         try
         {

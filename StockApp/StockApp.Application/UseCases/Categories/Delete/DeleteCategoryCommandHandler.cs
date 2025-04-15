@@ -8,9 +8,9 @@ using StockApp.Shared;
 namespace StockApp.Application.UseCases.Categories.Delete;
 
 public sealed class DeleteCategoryCommandHandler(ICategoryRepository repository, IUnitOfWork unitOfWork) 
-    : IRequestHandler<DeleteCategoryCommand, Result>
+    : IRequestHandler<DeleteCategoryCommandQuery, Result>
 {
-    public async Task<Result> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeleteCategoryCommandQuery request, CancellationToken cancellationToken)
     {
         try
         {

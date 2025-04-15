@@ -11,11 +11,26 @@ public static class ProductMapper
             product.CustomId,
             product.Title,
             product.Price,
+            product.Description,
             product.ImageUrl,
             product.IsActive,
             product.CreatedAt,
             product.UpdatedAt,
             product.CategoryId
         );
+    }
+    public static ResumeProductDto ToResumedDto(Product product)
+    {
+        return new ResumeProductDto(
+            product.CustomId,
+            product.ImageUrl,
+            product.Title,
+            product.IsActive
+        );
+    }
+    
+    public static List<ResumeProductDto> ToResumedDtoList(List<Product> products)
+    {
+        return products.Select(ToResumedDto).ToList();
     }
 }

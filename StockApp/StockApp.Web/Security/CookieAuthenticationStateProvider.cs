@@ -2,8 +2,6 @@ using System.Net.Http.Json;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using StockApp.Application.DTOs.Responses.Authentication;
-using StockApp.Domain.Abstractions;
-using StockApp.Domain.DTOs.Responses;
 
 namespace StockApp.Web.Security;
 

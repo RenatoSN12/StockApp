@@ -1,11 +1,8 @@
-using FluentValidation.Results;
 using MediatR;
 using StockApp.Application.Abstractions.Security;
 using StockApp.Application.DTOs.Responses.Authentication;
 using StockApp.Application.UseCases.Abstractions;
-using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
-using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Enums;
 using StockApp.Domain.Repositories;

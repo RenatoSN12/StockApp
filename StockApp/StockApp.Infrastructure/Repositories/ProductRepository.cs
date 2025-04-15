@@ -16,11 +16,9 @@ public class ProductRepository(AppDbContext context) : IProductRepository
     public async Task CreateAsync(Product product, CancellationToken cancellationToken = default)
         => await context.Products.AddAsync(product, cancellationToken);
     
-    public Task<Product?> GetByIdAsync(Specification<Product> specification,
+    public async Task<Product?> GetByCustomIdAsync(Specification<Product> specification,
         CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+        => await context.Products.AsNoTracking().Where(specification.ToExpression()).FirstOrDefaultAsync(cancellationToken);
 
     public async Task<List<Product>?> GetAllAsync(Specification<Product> specification, int pageNumber, int pageSize,
         CancellationToken cancellationToken = default)

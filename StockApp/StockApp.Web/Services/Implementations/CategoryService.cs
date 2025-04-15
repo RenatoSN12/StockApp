@@ -1,9 +1,6 @@
 using System.Net.Http.Json;
 using StockApp.Application.DTOs.Requests.Categories;
-using StockApp.Application.DTOs.Responses;
 using StockApp.Application.DTOs.Responses.Categories;
-using StockApp.Domain.Abstractions;
-using StockApp.Domain.DTOs.Responses;
 using StockApp.Shared;
 using StockApp.Web.Services.Abstractions;
 
@@ -27,7 +24,7 @@ public class CategoryService(IHttpClientFactory httpClientFactory) : ICategorySe
         return Result<PagedResponse<List<CategoryDto>>>.Success(data!);
     }
 
-    public async Task<Result<CategoryDto?>> CreateCategoryAsync(CreateCategoryDto request,
+    public async Task<Result<CategoryDto?>> CreateAsync(CreateCategoryDto request,
         CancellationToken cancellationToken = default)
     {
         var result = await _httpClient.PostAsJsonAsync("/api/categories", request, cancellationToken);

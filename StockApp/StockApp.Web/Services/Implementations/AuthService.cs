@@ -1,8 +1,6 @@
 using System.Net.Http.Json;
 using System.Text;
 using StockApp.Application.DTOs.Requests.Authentication;
-using StockApp.Domain.Abstractions;
-using StockApp.Domain.DTOs.Responses;
 using StockApp.Shared;
 using StockApp.Web.Services.Abstractions;
 

@@ -1,58 +1,62 @@
-@* @page "/products" *@
-@* @inherits ListProductsPage *@
-@* *@
-@* <MudText Typo="Typo.h3">Categorias</MudText> *@
-@* *@
-@* <div class="d-flex justify-end"> *@
-@*     <MudButton *@
-@*         Variant="Variant.Filled" *@
-@*         Color="Color.Primary" *@
-@*         StartIcon="@Icons.Material.TwoTone.Add" *@
-@*         Href="/categories/new"> *@
-@*         Novo Produto *@
-@*     </MudButton> *@
-@* </div> *@
-@* *@
-@* <MudDataGrid *@
-@*     Class="mt-4" *@
-@*     Items="@Categories" *@
-@*     QuickFilter="Filter" *@
-@*     Filterable="true" *@
-@*     Hideable="true"> *@
-@*     <ToolBarContent> *@
-@*         <MudText Typo="Typo.h6">Filtro</MudText> *@
-@*         <MudSpacer/> *@
-@*         <MudTextField  *@
-@*             Adornment="Adornment.Start" *@
-@*             AdornmentIcon="@Icons.Material.Filled.Search" *@
-@*             Immediate="true" *@
-@*             IconSize="Size.Medium" *@
-@*             Class="mt-0" *@
-@*             Placeholder="Digite o termo filtrado..."  *@
-@*             @bind-Value="SearchTerm"/> *@
-@*     </ToolBarContent> *@
-@*     <Columns> *@
-@*         <PropertyColumn Property="x => x.Id" Title="#"/> *@
-@*         <PropertyColumn Property="x => x.Title" Title="Categoria"/> *@
-@*         <PropertyColumn Property="x => x.Description" Title="Descrição"/> *@
-@*         <TemplateColumn> *@
-@*             <CellTemplate> *@
-@*                 <div class="d-flex justify-end"> *@
-@*                     <MudStack Row> *@
-@*                         <MudIconButton *@
-@*                             Icon="@Icons.Material.Filled.Edit" *@
-@*                             OnClick="() => OnEditButtonClickedAsync(context.Item!)" *@
-@*                             Color="Color.Primary" /> *@
-@* *@
-@*                         <MudIconButton *@
-@*                             Icon="@Icons.Material.Filled.Delete" *@
-@*                             Color="Color.Error" *@
-@*                             aria-label="Excluir" *@
-@*                             OnClick="() => OnDeleteButtonClickedAsync(context.Item!.Id, context.Item.Title)" /> *@
-@*                     </MudStack> *@
-@*                 </div> *@
-@*             </CellTemplate> *@
-@*         </TemplateColumn> *@
-@* *@
-@*     </Columns> *@
-@* </MudDataGrid> *@
+@page "/products"
+@using StockApp.Domain.Enums
+@inherits ListProductsPage
+
+<MudText Typo="Typo.h3">Produtos</MudText>
+
+<div class="d-flex justify-end">
+    <MudButton
+        Variant="Variant.Filled"
+        Color="Color.Primary"
+        StartIcon="@Icons.Material.TwoTone.Add"
+        Href="/products/new">
+        Novo Produto
+    </MudButton>
+</div>
+
+<MudDataGrid
+    Class="mt-4"
+    Items="@Products"
+    QuickFilter="Filter"
+    Filterable="true"
+    Hideable="true">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Filtro</MudText>
+        <MudSpacer/>
+        <MudTextField
+            Adornment="Adornment.Start"
+            AdornmentIcon="@Icons.Material.Filled.Search"
+            Immediate="true"
+            IconSize="Size.Medium"
+            Class="mt-0"
+            Placeholder="Digite o termo filtrado..."
+            @bind-Value="SearchTerm"/>
+    </ToolBarContent>
+    <Columns>
+        <PropertyColumn Property="x => x.CustomId" Title="Código"/>
+        <PropertyColumn Property="x => x.Title" Title="Título"/>
+        <TemplateColumn Title="Status">
+            <CellTemplate Context="x">
+                <MudChip Color="@(x.Item.Status == EStatus.Active ? Color.Success : Color.Default)">
+                    @(x.Item.Status == EStatus.Active ? "Ativo" : "Inativo")
+                </MudChip>
+            </CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn>
+            <CellTemplate>
+                <div class="d-flex justify-end">
+                    <MudStack Row>
+                        <MudIconButton
+                            Icon="@Icons.Material.Filled.Edit"
+                            Color="Color.Primary"/>
+                        <MudIconButton
+                            Icon="@Icons.Material.Filled.Delete"
+                            Color="Color.Error"
+                            aria-label="Excluir">
+                        </MudIconButton>
+                    </MudStack>
+                </div>
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+</MudDataGrid>

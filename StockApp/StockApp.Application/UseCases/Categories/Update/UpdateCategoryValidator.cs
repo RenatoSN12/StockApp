@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace StockApp.Application.UseCases.Categories.Update;
 
-public class UpdateCategoryValidator : AbstractValidator<UpdateCategoryCommand>
+public class UpdateCategoryValidator : AbstractValidator<UpdateCategoryCommandQuery>
 {
     public UpdateCategoryValidator()
     {

@@ -1,9 +1,7 @@
 using MediatR;
 using StockApp.Application.DTOs.Responses.Categories;
 using StockApp.Application.UseCases.Abstractions;
-using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
-using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Categories;
 using StockApp.Shared;
@@ -14,9 +12,9 @@ public sealed class UpdateCategoryCommandHandler(
     ICategoryRepository repository,
     IUnitOfWork unitOfWork,
     UpdateCategoryValidator validator)
-    : HandlerWithValidation<UpdateCategoryCommand>(validator), IRequestHandler<UpdateCategoryCommand, Result<CategoryDto>>
+    : HandlerWithValidation<UpdateCategoryCommandQuery>(validator), IRequestHandler<UpdateCategoryCommandQuery, Result<CategoryDto>>
 {
-    public async Task<Result<CategoryDto>> Handle(UpdateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Result<CategoryDto>> Handle(UpdateCategoryCommandQuery request, CancellationToken cancellationToken)
     {
         try
         {

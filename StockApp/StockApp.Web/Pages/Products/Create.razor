@@ -1,0 +1,49 @@
+@page "/products/new"
+@inherits CreateProductPage
+
+<MudPaper Class="p-2 mx-auto mt-4" Style="max-width: 800px;" Elevation="5">
+    <MudText Typo="Typo.h5" Class="mb-5 pa-4">Novo Produto</MudText>
+
+    <MudGrid Justify="Justify.Center" GutterSize="GutterSize.Small" Class="pl-4 pr-4">
+
+        <MudItem xs="12" Class="d-flex justify-center mb-4">
+            <img src="https://picsum.photos/200?random=1" class="avatar-preview" alt="Imagem do produto" />
+        </MudItem>
+
+        <MudItem xs="12" sm="12">
+            <MudTextField Label="Código do Produto" @bind-Value="Product.CustomId" />
+        </MudItem>
+
+        <MudItem xs="12" sm="12">
+            <MudTextField Label="Título do Produto" @bind-Value="Product.Title" />
+        </MudItem>
+
+        <MudItem xs="12" sm="12">
+            <MudTextField Label="Descrição" Lines="3" @bind-Value="Product.Description" />
+        </MudItem>
+
+        <MudItem xs="12" sm="12">
+            <MudTextField Label="Preço" @bind-Value="Product.Price"
+                          Adornment="Adornment.Start" AdornmentText="R$" />
+        </MudItem>
+
+        <MudItem xs="12" sm="12">
+            <MudSelect T="long" Label="Categoria" @bind-Value="Product.CategoryId">
+                @foreach (var category in Categories)
+                {
+                    <MudSelectItem Value="@category.Id">@category.Title</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        
+        <MudItem xs="12" sm="12" Class="d-flex justify-end mt-4 mb-4">
+            <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="() => { }">
+            Cancelar
+            </MudButton>
+            <MudButton Class="ml-2" Color="Color.Primary" Variant="Variant.Filled">
+                Salvar Produto
+            </MudButton>
+        </MudItem>
+
+    </MudGrid>
+</MudPaper>

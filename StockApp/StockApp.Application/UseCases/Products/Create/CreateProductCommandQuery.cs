@@ -5,4 +5,4 @@ using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Products.Create;
 
-public sealed record CreateProductCommand(CreateProductDto Dto, string UserId) : CommandBase<Result<ProductDto>>(UserId);
+public sealed record CreateProductCommandQuery(CreateProductDto Dto, string UserId) : CommandQueryBase<Result<ProductDto>>(UserId);

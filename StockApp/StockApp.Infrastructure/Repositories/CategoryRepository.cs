@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using StockApp.Domain.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
-using StockApp.Domain.DTOs.Responses;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Categories;

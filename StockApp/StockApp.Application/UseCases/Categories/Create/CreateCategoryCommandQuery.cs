@@ -4,5 +4,5 @@ using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Categories.Create;
 
-public sealed record CreateCategoryCommand(string UserId, CreateCategoryDto Dto)
-    : CommandBase<Result<CategoryDto>>(UserId);
+public sealed record CreateCategoryCommandQuery(string UserId, CreateCategoryDto Dto)
+    : CommandQueryBase<Result<CategoryDto>>(UserId);
