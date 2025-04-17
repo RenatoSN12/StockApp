@@ -15,10 +15,19 @@ public class ProductRepository(AppDbContext context) : IProductRepository
 
     public async Task CreateAsync(Product product, CancellationToken cancellationToken = default)
         => await context.Products.AddAsync(product, cancellationToken);
-    
-    public async Task<Product?> GetByCustomIdAsync(Specification<Product> specification,
+
+    public void Update(Product product)
+        => context.Products.Update(product);
+
+    public async Task<Product?> GetByCustomIdAsync(Specification<Product> specification, bool asNoTracking,
         CancellationToken cancellationToken = default)
-        => await context.Products.AsNoTracking().Where(specification.ToExpression()).FirstOrDefaultAsync(cancellationToken);
+    {
+        var query = context.Products.AsQueryable();
+        if(asNoTracking)
+            query = query.AsNoTracking();
+        
+        return await query.FirstOrDefaultAsync(specification.ToExpression(), cancellationToken);
+    }
 
     public async Task<List<Product>?> GetAllAsync(Specification<Product> specification, int pageNumber, int pageSize,
         CancellationToken cancellationToken = default)

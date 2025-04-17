@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using StockApp.Application.DTOs.Responses.Products;
+using StockApp.Web.Extensions;
 using StockApp.Web.Services.Abstractions;
 
 namespace StockApp.Web.Pages.Products;
@@ -20,6 +22,8 @@ public partial class DetailProductPage : ComponentBase
     
     [Inject] private IProductService ProductService { get; set; } = null!;
     [Inject] private ICategoryService CategoryService { get; set; } = null!;
+    [Inject] private ISnackbar Snackbar { get; set; } = null!;
+    [Inject] protected NavigationManager NavigationManager { get; set; } = null!;
     
     #endregion
     
@@ -28,14 +32,10 @@ public partial class DetailProductPage : ComponentBase
     protected override async Task OnParametersSetAsync()
     {
         var result = await ProductService.GetByCustomId(CustomId);
-        if (result.IsSuccess && result.Value is not null)
+        if (result is { IsSuccess: true, Value: not null })
         {
-            Product.CustomId = result.Value.CustomId;
-            Product.Title = result.Value.Title;
-            Product.Description = result.Value.Description;
-            Product.Price = result.Value.Price;
-
-            StateHasChanged(); // força render se necessário
+            Product = result.Value;
+            StateHasChanged();
         }
     }
 
@@ -43,18 +43,26 @@ public partial class DetailProductPage : ComponentBase
     
     #region Methods
 
-    // private async Task GetProduct()
-    // {
-    //     var result = await ProductService.GetByCustomId(CustomId);
-    //     if (result.IsSuccess && result.Value is not null)
-    //     {
-    //         Product.CustomId = result.Value.CustomId;
-    //         Product.Title = result.Value.Title;
-    //         Product.Description = result.Value.Description;
-    //         Product.Price = result.Value.Price;
-    //     }
-    // }
+    protected void Cancel() => NavigationManager.NavigateTo("/products");
 
+    protected async Task SaveChanges()
+    {
+        var result = await ProductService.UpdateAsync(Product);
+        if (result.IsFailure)
+        {
+            foreach (var erro in result.Error.Message.SplitErrors())
+            {
+                Snackbar.Add(erro, Severity.Error);
+            }            
+        }
+        else
+        {
+            Snackbar.Add("Produto atualizado com sucesso!", Severity.Success);
+            NavigationManager.NavigateTo("/products");
+        }
+            
+    }
+    
     #endregion
 
 }

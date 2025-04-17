@@ -1,32 +1,15 @@
-@using System.Linq.Expressions
-@using StockApp.Application.DTOs.Responses.Categories
-@using MudBlazor
-@typeparam TItem
+@inherits CategorySelectorPage
 
 <MudSelect T="long"
            Label="Categoria"
-           @bind-Value="Value">
+           Value="Value"
+           ValueChanged="OnValueChanged"
+           ValueExpression="ValueExpression">
     <MudSelectItem Disabled="true" Value="0L">Selecione uma categoria</MudSelectItem>
 
-    @if (Categories != null)
+    @foreach (var category in Categories)
     {
-        @foreach (var category in Categories)
-        {
-            <MudSelectItem Value="@category.Id">@category.Title</MudSelectItem>
-        }
+        <MudSelectItem Value="@category.Id">@category.Title</MudSelectItem>
     }
 </MudSelect>
 
-@code {
-    [Parameter]
-    public List<CategoryDto> Categories { get; set; } = new();
-
-    [Parameter]
-    public long Value { get; set; }
-
-    [Parameter]
-    public EventCallback<long> ValueChanged { get; set; }
-
-    [Parameter]
-    public Expression<Func<long>>? ValueExpression { get; set; }
-}

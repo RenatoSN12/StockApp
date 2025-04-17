@@ -39,15 +39,19 @@ public class CreateProductPage : ComponentBase
                     Snackbar.Add(error, Severity.Error);
                 }
             }
-            Snackbar.Add("Item criado com sucesso!", Severity.Success);
-            NavigationManager.NavigateTo("/products");
+            else
+            {
+                Snackbar.Add("Item criado com sucesso!", Severity.Success);
+                NavigationManager.NavigateTo("/products");
+            }
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            Snackbar.Add(e.Message, Severity.Error);
         }
     }
+    
+    protected void Cancel() => NavigationManager.NavigateTo("/products");
     
     #endregion
     

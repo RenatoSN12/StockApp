@@ -8,17 +8,17 @@ public class Product : Entity
 {
     public string CustomId { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; } = string.Empty;
     public decimal Price { get; set; }
-    public EStatus IsActive { get; set; } = EStatus.Active;
+    public EStatus Status { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
     public long CategoryId { get; set; }
-    public Category Category { get; set; } = null!;
+    public Category? Category { get; set; } = null!;
     public string? ImageUrl { get; set; }
     public ICollection<ItemStock> Inventories { get; set; } = [];
 
-    private Product(string userId, string customId, string title, string description, decimal price, EStatus isActive,
+    private Product(string userId, string customId, string title, string description, decimal price, EStatus status,
         long categoryId,
         string? imageUrl)
     {
@@ -27,7 +27,7 @@ public class Product : Entity
         Title = title;
         Description = description;
         Price = price;
-        IsActive = isActive;
+        Status = status;
         CategoryId = categoryId;
         ImageUrl = imageUrl;
         

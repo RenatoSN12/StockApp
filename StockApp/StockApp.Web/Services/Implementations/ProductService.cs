@@ -46,4 +46,15 @@ public class ProductService(IHttpClientFactory httpClientFactory) : IProductServ
         
         return Result<ProductDto>.Success(data!);
     }
+
+    public async Task<Result<ProductDto>> UpdateAsync(ProductDto productDto, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient.PutAsJsonAsync($"/api/products", productDto, cancellationToken);
+        if(!response.IsSuccessStatusCode)
+            return await ErrorManager.CreateTypedFailureFromResponse<ProductDto>(response);
+        
+        var data = await response.Content.ReadFromJsonAsync<ProductDto>(cancellationToken);
+        
+        return Result<ProductDto>.Success(data!);
+    }
 }

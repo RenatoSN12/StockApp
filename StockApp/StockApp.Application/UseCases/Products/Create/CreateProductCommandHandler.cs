@@ -9,9 +9,9 @@ using StockApp.Shared;
 namespace StockApp.Application.UseCases.Products.Create;
 
 public class CreateProductCommandHandler(IProductRepository repository, IUnitOfWork unitOfWork)
-    : IRequestHandler<CreateProductCommandQuery, Result<ProductDto>>
+    : IRequestHandler<CreateProductCommand, Result<ProductDto>>
 {
-    public async Task<Result<ProductDto>> Handle(CreateProductCommandQuery request, CancellationToken cancellationToken)
+    public async Task<Result<ProductDto>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         try
         {
@@ -29,7 +29,7 @@ public class CreateProductCommandHandler(IProductRepository repository, IUnitOfW
             
             return Result<ProductDto>.Success(ProductMapper.ToDto(product));
         }
-        catch
+        catch(Exception ex)
         {
             return Result<ProductDto>.Failure(new Error("500", "Ocorreu um erro inesperado ao criar o produto."));
         }

@@ -33,12 +33,11 @@
             @bind-Value="SearchTerm"/>
     </ToolBarContent>
     <Columns>
-        <TemplateColumn>
+        <TemplateColumn Title="Código">
             <CellTemplate Context="x">
                 <MudLink Href="@($"/products/{x.Item!.CustomId.ToLower()}")">@x.Item.CustomId</MudLink>
             </CellTemplate>
         </TemplateColumn>
-        @* <PropertyColumn Property="x => x.CustomId" Title="Código"/> *@
         <PropertyColumn Property="x => x.Title" Title="Título"/>
         <TemplateColumn Title="Status">
             <CellTemplate Context="x">
@@ -51,9 +50,6 @@
             <CellTemplate>
                 <div class="d-flex justify-end">
                     <MudStack Row>
-                        <MudIconButton
-                            Icon="@Icons.Material.Filled.Edit"
-                            Color="Color.Primary"/>
                         <MudIconButton
                             Icon="@Icons.Material.Filled.Delete"
                             Color="Color.Error"

@@ -7,6 +7,7 @@ using StockApp.Application.DTOs.Responses.Products;
 using StockApp.Application.UseCases.Products.Create;
 using StockApp.Application.UseCases.Products.GetAll;
 using StockApp.Application.UseCases.Products.GetByCustomId;
+using StockApp.Application.UseCases.Products.Update;
 using StockApp.Shared;
 
 namespace StockApp.Api.Controllers;
@@ -22,7 +23,7 @@ public class ProductController(ISender sender) : ControllerBase
     {
         var userId = HttpContext.GetUserEmail();
 
-        var command = new CreateProductCommandQuery(createProductDto, userId);
+        var command = new CreateProductCommand(createProductDto, userId);
         
         var result = await sender.Send(command);
 
@@ -45,6 +46,18 @@ public class ProductController(ISender sender) : ControllerBase
     {
         var userId = HttpContext.GetUserEmail();
         var query = new GetProductByCustomIdQuery(userId, productId);
+        
+        var result = await sender.Send(query);
+
+        return result.ToActionResult();
+    }
+    
+    [HttpPut]
+    public async Task<ActionResult<ProductDto>> Update(ProductDto dto)
+    {
+        
+        var userId = HttpContext.GetUserEmail();
+        var query = new UpdateProductCommand(dto, userId);
         
         var result = await sender.Send(query);
 

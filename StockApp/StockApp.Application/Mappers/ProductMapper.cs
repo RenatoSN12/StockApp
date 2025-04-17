@@ -13,7 +13,7 @@ public static class ProductMapper
             product.Price,
             product.Description,
             product.ImageUrl,
-            product.IsActive,
+            product.Status,
             product.CreatedAt,
             product.UpdatedAt,
             product.CategoryId
@@ -25,7 +25,7 @@ public static class ProductMapper
             product.CustomId,
             product.ImageUrl,
             product.Title,
-            product.IsActive
+            product.Status
         );
     }
     

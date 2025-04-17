@@ -27,18 +27,11 @@
         </MudItem>
 
         <MudItem xs="12" sm="12">
-            <MudSelect T="long" Label="Categoria" @bind-Value="Product.CategoryId">
-                <MudSelectItem Disabled="true" Value="0L">Selecione uma categoria</MudSelectItem>
-
-                @foreach (var category in Categories)
-                {
-                    <MudSelectItem Value="@category.Id">@category.Title</MudSelectItem>
-                }
-            </MudSelect>
+            <CategorySelector @bind-Value="Product.CategoryId"/>
         </MudItem>
 
         <MudItem xs="12" sm="12" Class="d-flex justify-end mt-4 mb-4">
-            <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="() => { }">
+            <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="Cancel">
                 Cancelar
             </MudButton>
             <MudButton Class="ml-2" Color="Color.Primary" Variant="Variant.Filled" OnClick="CreateProduct">

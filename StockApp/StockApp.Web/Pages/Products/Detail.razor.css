@@ -1,6 +1,7 @@
 .grid {
     height: 100%;
     width: 70%;
+    margin-bottom: 2%;
 }
 
 .image-container {
@@ -19,4 +20,9 @@
 
 .title{
     margin-top: 3%;
+}
+
+.actions-buttons {
+    justify-content: flex-end;
+    margin-top: 5%;
 }
