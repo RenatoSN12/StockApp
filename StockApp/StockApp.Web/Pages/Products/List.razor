@@ -33,7 +33,12 @@
             @bind-Value="SearchTerm"/>
     </ToolBarContent>
     <Columns>
-        <PropertyColumn Property="x => x.CustomId" Title="Código"/>
+        <TemplateColumn>
+            <CellTemplate Context="x">
+                <MudLink Href="@($"/products/{x.Item!.CustomId.ToLower()}")">@x.Item.CustomId</MudLink>
+            </CellTemplate>
+        </TemplateColumn>
+        @* <PropertyColumn Property="x => x.CustomId" Title="Código"/> *@
         <PropertyColumn Property="x => x.Title" Title="Título"/>
         <TemplateColumn Title="Status">
             <CellTemplate Context="x">

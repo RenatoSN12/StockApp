@@ -23,6 +23,17 @@ public class ProductService(IHttpClientFactory httpClientFactory) : IProductServ
         return Result<PagedResponse<List<ResumeProductDto>>>.Success(data!);
     }
 
+    public async Task<Result<ProductDto>> GetByCustomId(string customId, CancellationToken cancellationToken = default)
+    {
+        var response = await _httpClient.GetAsync($"/api/products/{customId}", cancellationToken);
+        if (!response.IsSuccessStatusCode)
+            return await ErrorManager.CreateTypedFailureFromResponse<ProductDto>(response);
+
+        var data = await response.Content.ReadFromJsonAsync<ProductDto>(cancellationToken: cancellationToken);
+        
+        return Result<ProductDto>.Success(data!);
+    }
+
     public async Task<Result<ProductDto>> CreateAsync(CreateProductDto createProductDto,
         CancellationToken cancellationToken)
     {

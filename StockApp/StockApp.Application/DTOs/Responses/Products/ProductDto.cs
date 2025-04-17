@@ -30,7 +30,7 @@ public sealed class ProductDto
     public string? Description { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public decimal Price { get; set; }
-    public string? ImageUrl { get; set; } = null;
+    public string? ImageUrl { get; set; }
     public EStatus Status { get; set; } = EStatus.Active;
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;

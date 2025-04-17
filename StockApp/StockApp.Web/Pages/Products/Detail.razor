@@ -1,0 +1,57 @@
+@page "/products/{customId}"
+@using System.Globalization
+@inherits DetailProductPage
+
+<MudText Class="title" Typo="Typo.h5">Edição / Visualização de Produto</MudText>
+
+<div class="product-detail-header">
+    <MudGrid>
+        <MudItem xs="12" sm="12">
+            <MudTextField Disabled="true" 
+                          Variant="Variant.Outlined"
+                          T="string" 
+                          @bind-Value="Product.CustomId"
+                          Label="Código"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled._123"/>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudTextField Disabled="true" T="string" 
+                          Label="Data de Cadastro:"
+                          Variant="Variant.Outlined"
+                          Value="Product.CreatedDate.ToString(CultureInfo.CurrentCulture)"
+                          Adornment="Adornment.Start" 
+                          AdornmentIcon="@Icons.Material.Filled.CalendarMonth"/>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudTextField Disabled="true" T="string" 
+                          Label="Ultima atualização:"
+                          Adornment="Adornment.Start"
+                          Value="Product.UpdatedDate.ToString(CultureInfo.CurrentCulture)"
+                          Variant="Variant.Outlined"
+                          AdornmentIcon="@Icons.Material.Filled.EditCalendar"/>
+        </MudItem>
+    </MudGrid>
+
+    <div class="image-container">
+        <MudImage Src="https://picsum.photos/300?random=1"
+                  Class="rounded-circle"
+                  Height="200"
+                  Width="200"/>
+    </div>
+</div>
+
+<MudGrid Class="grid" Justify="Justify.FlexStart">
+    @* <MudItem xs="12" sm="12"> *@
+    @*     <MudTextField Disabled="true" T="string" @bind-Value="Product.CustomId" Label="Código"></MudTextField> *@
+    @* </MudItem> *@
+    <MudItem xs="12" sm="12">
+        <MudTextField T="string" @bind-Value="Product.Title" Label="Título"/>
+    </MudItem>
+    <MudItem xs="12" sm="12">
+        <MudTextField T="string" @bind-Value="Product.Description" Label="Descrição"/>
+    </MudItem>
+    <MudItem xs="12" sm="12">
+        <MudTextField T="decimal" AdornmentText="R$" Adornment="Adornment.Start" @bind-Value="Product.Price" Label="Preço"/>
+    </MudItem>
+</MudGrid>

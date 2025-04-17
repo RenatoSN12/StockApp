@@ -1,0 +1,32 @@
+@using System.Linq.Expressions
+@using StockApp.Application.DTOs.Responses.Categories
+@using MudBlazor
+@typeparam TItem
+
+<MudSelect T="long"
+           Label="Categoria"
+           @bind-Value="Value">
+    <MudSelectItem Disabled="true" Value="0L">Selecione uma categoria</MudSelectItem>
+
+    @if (Categories != null)
+    {
+        @foreach (var category in Categories)
+        {
+            <MudSelectItem Value="@category.Id">@category.Title</MudSelectItem>
+        }
+    }
+</MudSelect>
+
+@code {
+    [Parameter]
+    public List<CategoryDto> Categories { get; set; } = new();
+
+    [Parameter]
+    public long Value { get; set; }
+
+    [Parameter]
+    public EventCallback<long> ValueChanged { get; set; }
+
+    [Parameter]
+    public Expression<Func<long>>? ValueExpression { get; set; }
+}

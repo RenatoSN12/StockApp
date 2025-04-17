@@ -24,8 +24,7 @@ public sealed class GetAllCategoriesQueryHandler(ICategoryRepository repository)
                 .Select(x => new CategoryDto(x.Id, x.Title, x.Description))
                 .ToList();
 
-            var response =
-                new PagedResponse<List<CategoryDto>?>(categoriesDto, totalCount, request.PageNumber, request.PageSize);
+            var response = new PagedResponse<List<CategoryDto>>(categoriesDto, totalCount, request.PageNumber, request.PageSize);
 
             return Result<PagedResponse<List<CategoryDto>>>.Success(response);
         }

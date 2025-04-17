@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using StockApp.Application.DTOs.Responses.Products;
-using StockApp.Domain.Repositories.Products;
 using StockApp.Web.Extensions;
 using StockApp.Web.Services.Abstractions;
 

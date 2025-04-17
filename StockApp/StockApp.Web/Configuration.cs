@@ -9,6 +9,13 @@ public static class Configuration
 
     public static MudTheme Theme = new()
     {
+        Typography = new Typography
+        {
+            Default = new DefaultTypography
+            {
+                FontFamily = ["Quicksand", "sans-serif"]
+            }
+        },
         PaletteLight = new PaletteLight
         {
             Background = Colors.Gray.Lighten4,

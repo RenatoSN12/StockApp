@@ -24,4 +24,8 @@
     <ProjectReference Include="..\StockApp.Shared\StockApp.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\" />
+  </ItemGroup>
+
 </Project>
