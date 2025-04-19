@@ -1,13 +1,7 @@
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
 using StockApp.Application;
-using StockApp.Application.UseCases.Authentication.Login;
-using StockApp.Application.UseCases.Authentication.Register;
 using StockApp.Domain;
 using StockApp.Infrastructure;
-using StockApp.Infrastructure.Data;
 
 namespace StockApp.Api.Common.Extensions;
 
@@ -35,13 +29,14 @@ public static class ServicesExtensions
             });
     }
 
-    public static void AddValidation(this IServiceCollection services)
-    {
-        services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
-        services.AddValidatorsFromAssemblyContaining<LoginCommandValidator>();
-        services.AddFluentValidationAutoValidation();
-        services.AddFluentValidationClientsideAdapters();
-    }
+    // public static void AddValidation(this IServiceCollection services)
+    // {
+        // services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
+        // services.AddValidatorsFromAssemblyContaining<LoginCommandValidator>();
+        // services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
+        // services.AddFluentValidationAutoValidation();
+        // services.AddFluentValidationClientsideAdapters();
+    // }
 
     public static void AddSwaggerDocumentation(this IServiceCollection services)
     {

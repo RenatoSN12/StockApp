@@ -5,5 +5,5 @@ namespace StockApp.Domain.Repositories;
 
 public interface IRepository<T> where T : Entity
 {
-    Task<int> GetTotalCount(ISpecification<T> specification, CancellationToken cancellationToken = default);
+    Task<int> GetTotalCount(Specification<T> specification, CancellationToken cancellationToken = default);
 }

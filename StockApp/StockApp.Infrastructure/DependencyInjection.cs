@@ -18,6 +18,7 @@ public static class DependencyInjection
         services.AddTransient<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ILocationRepository, LocationRepository>();
         return services;
     }
 }

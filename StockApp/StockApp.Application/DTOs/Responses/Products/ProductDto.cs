@@ -7,8 +7,8 @@ public sealed class ProductDto
     public ProductDto(string customId,
         string title,
         decimal price,
-        string? imageUrl,
-        string? description,        
+        string imageUrl,
+        string description,        
         EStatus status,
         DateTime createdDate,
         DateTime updatedDate,
@@ -27,10 +27,10 @@ public sealed class ProductDto
     
     public ProductDto(){}
     public string CustomId { get; set; } = string.Empty;
-    public string? Description { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
     public decimal Price { get; set; }
-    public string? ImageUrl { get; set; }
+    public string ImageUrl { get; set; }
     public EStatus Status { get; set; } = EStatus.Active;
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;

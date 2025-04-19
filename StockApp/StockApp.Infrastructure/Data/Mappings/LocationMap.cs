@@ -13,7 +13,7 @@ public class LocationMap : IEntityTypeConfiguration<Location>
         
         builder.Property(x => x.Title).IsRequired().HasMaxLength(80).HasColumnType("VARCHAR");
         builder.Property(x => x.Description).IsRequired(false).HasMaxLength(255).HasColumnType("VARCHAR");
-        builder.Property(x=>x.IsActive).IsRequired().HasColumnType("SMALLINT");
+        builder.Property(x=>x.Status).IsRequired().HasColumnType("SMALLINT");
         builder.Property(x => x.UserId).IsRequired().HasColumnType("VARCHAR").HasMaxLength(80);
     }
 }

@@ -2,7 +2,7 @@ using FluentValidation;
 
 namespace StockApp.Application.UseCases.Categories.Create;
 
-public sealed class CreateCategoryValidator : AbstractValidator<CreateCategoryCommandQuery>
+public sealed class CreateCategoryValidator : AbstractValidator<CreateCategoryCommand>
 {
     public CreateCategoryValidator()
     {

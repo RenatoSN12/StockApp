@@ -31,7 +31,7 @@ public class CategoryController(ISender sender) : ControllerBase
     public async Task<ActionResult<CategoryDto>> Create([FromBody] CreateCategoryDto request)
     {
         var userId = HttpContext.GetUserEmail();
-        var command = new CreateCategoryCommandQuery(userId, request);
+        var command = new CreateCategoryCommand(userId, request);
         
         var result = await sender.Send(command);
         return result.ToActionResult();
@@ -52,7 +52,7 @@ public class CategoryController(ISender sender) : ControllerBase
     public async Task<ActionResult<CategoryDto>> Update(int id, [FromBody] UpdateCategoryDto request)
     {
         var userId = HttpContext.GetUserEmail();
-        var command = new UpdateCategoryCommandQuery(request, id, userId);
+        var command = new UpdateCategoryQuery(request, id, userId);
         
         var result = await sender.Send(command);
 

@@ -25,6 +25,7 @@ builder.Services.AddScoped(x => (ICookieAuthenticationStateProvider)x.GetRequire
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
 
 builder.Services.AddMudServices();
 

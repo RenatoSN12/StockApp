@@ -1,10 +1,10 @@
 using FluentValidation;
 
-namespace StockApp.Application.UseCases.Products.Create;
+namespace StockApp.Application.UseCases.Products.Update;
 
-public sealed class CreateProductValidator : AbstractValidator<CreateProductCommand>
+public sealed class UpdateProductValidator : AbstractValidator<UpdateProductCommand>
 {
-    public CreateProductValidator()
+    public UpdateProductValidator()
     {
         RuleFor(x=> x.UserId)
             .NotEmpty().WithMessage("É obrigatório estar autenticado para criar um novo produto.");

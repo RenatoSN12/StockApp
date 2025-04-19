@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using StockApp.Domain.Abstractions.Interfaces;
+using StockApp.Domain.Abstractions;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Categories;
@@ -39,7 +39,7 @@ public class CategoryRepository(AppDbContext context) : ICategoryRepository
     public void Remove(Category category)
         => context.Categories.Remove(category);
     
-    public async Task<int> GetTotalCount(ISpecification<Category> specification, CancellationToken cancellationToken = default)
+    public async Task<int> GetTotalCount(Specification<Category> specification, CancellationToken cancellationToken = default)
         => await context.Categories.AsNoTracking().Where(specification.ToExpression()).CountAsync(cancellationToken);
     public void Update(Category category)
         => context.Categories.Update(category);

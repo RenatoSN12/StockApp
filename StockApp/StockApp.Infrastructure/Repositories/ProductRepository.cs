@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using StockApp.Domain.Abstractions;
-using StockApp.Domain.Abstractions.Interfaces;
 using StockApp.Domain.Entities;
 using StockApp.Domain.Repositories.Products;
 using StockApp.Infrastructure.Data;
@@ -9,11 +8,11 @@ namespace StockApp.Infrastructure.Repositories;
 
 public class ProductRepository(AppDbContext context) : IProductRepository
 {
-    public async Task<int> GetTotalCount(ISpecification<Product> specification,
+    public async Task<int> GetTotalCount(Specification<Product> specification,
         CancellationToken cancellationToken = default)
         => await context.Products.AsNoTracking().Where(specification.ToExpression()).CountAsync(cancellationToken);
 
-    public async Task CreateAsync(Product product, CancellationToken cancellationToken = default)
+    public async Task AddAsync(Product product, CancellationToken cancellationToken = default)
         => await context.Products.AddAsync(product, cancellationToken);
 
     public void Update(Product product)
