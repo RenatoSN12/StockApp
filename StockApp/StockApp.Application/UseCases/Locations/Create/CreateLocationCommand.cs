@@ -1,4 +1,4 @@
-using StockApp.Application.DTOs.Requests.Location;
+using StockApp.Application.DTOs.Requests.Locations;
 using StockApp.Application.DTOs.Responses.Location;
 using StockApp.Application.UseCases.Categories;
 using StockApp.Shared;

@@ -1,7 +1,7 @@
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Entities;
 
-namespace StockApp.Domain.Repositories.Products;
+namespace StockApp.Domain.Repositories;
 
 public interface IProductRepository : IRepository<Product>
 {

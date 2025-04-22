@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StockApp.Api.Common.Extensions;
-using StockApp.Application.DTOs.Requests.Location;
+using StockApp.Application.DTOs.Requests.Locations;
 using StockApp.Application.DTOs.Responses.Location;
 using StockApp.Application.UseCases.Locations.Create;
 using StockApp.Application.UseCases.Locations.GetAll;

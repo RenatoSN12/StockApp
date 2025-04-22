@@ -62,6 +62,41 @@
             <MudSelectItem T="EStatus" Value="EStatus.Inactive">Inativo</MudSelectItem>
         </MudSelect>
     </MudItem>
+    <MudItem xs="12" sm="12">
+        <MudText Typo="Typo.h6" Class="mb-6">Locais de Estoque</MudText>
+        <MudTable Items="Locations"
+                  Style="background-color: transparent"
+                  Elevation="0"
+                  ReadOnly="true">
+            <HeaderContent>
+                <MudTh>Local</MudTh>
+                <MudTh>Quantidade</MudTh>
+                <MudTh></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd>@context.LocationName</MudTd>
+                <MudTd>@context.Quantity</MudTd>
+                <MudTd>
+                    <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Delete"
+                                   OnClick="@(() => RemoveLocation(context.LocationId))"/>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+
+        <MudGrid Class="mt-3">
+            <MudItem xs="12" sm="8">
+                <MudSelect T="long" Label="Adicionar Local" @bind-Value="SelectedLocationId">
+                    @foreach (var location in AvailableLocations)
+                    {
+                        <MudSelectItem Value="@location.Key">@location.Value</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" Class="mt-2">
+                <MudButton Color="Color.Primary" OnClick="AddLocation">Adicionar Local</MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudItem>
     <MudItem xs="12" sm="12" Class="d-flex justify-end mt-4 mb-4">
         <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="Cancel">
             Cancelar

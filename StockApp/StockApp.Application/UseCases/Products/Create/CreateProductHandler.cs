@@ -4,7 +4,7 @@ using StockApp.Application.Mappers;
 using StockApp.Application.UseCases.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
 using StockApp.Domain.Entities;
-using StockApp.Domain.Repositories.Products;
+using StockApp.Domain.Repositories;
 using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Products.Create;

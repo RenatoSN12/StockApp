@@ -1,3 +1,4 @@
+using StockApp.Application.DTOs.Responses.Location;
 using StockApp.Domain.Enums;
 
 namespace StockApp.Application.DTOs.Responses.Products;
@@ -12,7 +13,9 @@ public sealed class ProductDto
         EStatus status,
         DateTime createdDate,
         DateTime updatedDate,
-        long categoryId)
+        long categoryId,
+        List<ProductLocationDto> locations
+        )
     {
         CustomId = customId;
         Title = title;
@@ -23,6 +26,7 @@ public sealed class ProductDto
         CreatedDate = createdDate;
         UpdatedDate = updatedDate;
         CategoryId = categoryId;
+        Locations = locations;
     }
     
     public ProductDto(){}
@@ -35,4 +39,5 @@ public sealed class ProductDto
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
     public long CategoryId { get; set; }
+    public List<ProductLocationDto> Locations { get; set; } = [];
 }

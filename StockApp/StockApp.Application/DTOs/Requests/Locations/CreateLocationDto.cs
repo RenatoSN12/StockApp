@@ -1,4 +1,4 @@
-namespace StockApp.Application.DTOs.Requests.Location;
+namespace StockApp.Application.DTOs.Requests.Locations;
 
 public sealed class CreateLocationDto
 {

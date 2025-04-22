@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Entities;
-using StockApp.Domain.Repositories.Products;
+using StockApp.Domain.Repositories;
 using StockApp.Infrastructure.Data;
 
 namespace StockApp.Infrastructure.Repositories;
@@ -25,7 +25,7 @@ public class ProductRepository(AppDbContext context) : IProductRepository
         if(asNoTracking)
             query = query.AsNoTracking();
         
-        return await query.FirstOrDefaultAsync(specification.ToExpression(), cancellationToken);
+        return await query.Include(x=>x.Inventories).ThenInclude(i=> i.Location).FirstOrDefaultAsync(specification.ToExpression(), cancellationToken);
     }
 
     public async Task<List<Product>?> GetAllAsync(Specification<Product> specification, int pageNumber, int pageSize,

@@ -41,7 +41,7 @@ public class CategoryController(ISender sender) : ControllerBase
     public async Task<ActionResult> Delete(int id)
     {
         var userId = HttpContext.GetUserEmail();
-        var command = new DeleteCategoryCommandQuery(userId,id);
+        var command = new DeleteCategoryCommand(userId,id);
         
         var result = await sender.Send(command);
 

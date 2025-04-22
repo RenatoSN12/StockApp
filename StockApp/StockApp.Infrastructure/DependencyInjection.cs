@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using StockApp.Application.Abstractions.Security;
 using StockApp.Domain.Abstractions.Interfaces;
 using StockApp.Domain.Repositories;
-using StockApp.Domain.Repositories.Products;
 using StockApp.Infrastructure.Data;
 using StockApp.Infrastructure.Repositories;
 using StockApp.Infrastructure.Services;
@@ -19,6 +18,8 @@ public static class DependencyInjection
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ILocationRepository, LocationRepository>();
+        services.AddScoped<IItemStockRepository, ItemStockRepository>();
+        services.AddScoped<IMovementRepository, MovementRepository>();
         return services;
     }
 }

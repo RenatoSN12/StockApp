@@ -1,3 +1,4 @@
+using StockApp.Application.DTOs.Responses.Location;
 using StockApp.Application.DTOs.Responses.Products;
 using StockApp.Domain.Entities;
 
@@ -7,6 +8,10 @@ public static class ProductMapper
 {
     public static ProductDto ToDto(Product product)
     {
+        var locations = product.Inventories
+            .Select(x => new ProductLocationDto(x.LocationId, x.Location.Title, x.Quantity))
+            .ToList();
+            
         return new ProductDto(
             product.CustomId,
             product.Title,
@@ -16,10 +21,11 @@ public static class ProductMapper
             product.Status,
             product.CreatedAt,
             product.UpdatedAt,
-            product.CategoryId
+            product.CategoryId,
+            locations
         );
     }
-    public static ResumeProductDto ToResumedDto(Product product)
+    private static ResumeProductDto ToResumedDto(Product product)
     {
         return new ResumeProductDto(
             product.CustomId,

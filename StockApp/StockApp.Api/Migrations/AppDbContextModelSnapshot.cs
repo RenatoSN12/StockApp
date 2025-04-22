@@ -122,6 +122,54 @@ namespace StockApp.Api.Migrations
                     b.ToTable("Location", (string)null);
                 });
 
+            modelBuilder.Entity("StockApp.Domain.Entities.Movement", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("NVARCHAR");
+
+                    b.Property<long?>("DestinationLocationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("MovementDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<short>("MovementType")
+                        .HasColumnType("SMALLINT");
+
+                    b.Property<long?>("OriginLocationId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProductId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<short>("Status")
+                        .HasColumnType("SMALLINT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationLocationId");
+
+                    b.HasIndex("OriginLocationId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Movement", (string)null);
+                });
+
             modelBuilder.Entity("StockApp.Domain.Entities.Product", b =>
                 {
                     b.Property<long>("Id")
@@ -210,19 +258,44 @@ namespace StockApp.Api.Migrations
 
             modelBuilder.Entity("StockApp.Domain.Entities.ItemStock", b =>
                 {
-                    b.HasOne("StockApp.Domain.Entities.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("StockApp.Domain.Entities.Product", "Product")
                         .WithMany("Inventories")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("StockApp.Domain.Entities.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Location");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("StockApp.Domain.Entities.Movement", b =>
+                {
+                    b.HasOne("StockApp.Domain.Entities.Location", "DestinationLocation")
+                        .WithMany()
+                        .HasForeignKey("DestinationLocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("StockApp.Domain.Entities.Location", "OriginLocation")
+                        .WithMany()
+                        .HasForeignKey("OriginLocationId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("StockApp.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DestinationLocation");
+
+                    b.Navigation("OriginLocation");
 
                     b.Navigation("Product");
                 });

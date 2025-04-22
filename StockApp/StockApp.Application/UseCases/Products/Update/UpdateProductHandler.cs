@@ -4,7 +4,7 @@ using StockApp.Application.DTOs.Responses.Products;
 using StockApp.Application.Mappers;
 using StockApp.Application.UseCases.Abstractions;
 using StockApp.Domain.Abstractions.Interfaces;
-using StockApp.Domain.Repositories.Products;
+using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Products;
 using StockApp.Shared;
 

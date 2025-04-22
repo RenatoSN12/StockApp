@@ -29,15 +29,6 @@ public static class ServicesExtensions
             });
     }
 
-    // public static void AddValidation(this IServiceCollection services)
-    // {
-        // services.AddValidatorsFromAssemblyContaining<RegisterCommandValidator>();
-        // services.AddValidatorsFromAssemblyContaining<LoginCommandValidator>();
-        // services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
-        // services.AddFluentValidationAutoValidation();
-        // services.AddFluentValidationClientsideAdapters();
-    // }
-
     public static void AddSwaggerDocumentation(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();

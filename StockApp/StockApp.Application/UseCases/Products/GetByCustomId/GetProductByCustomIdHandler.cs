@@ -1,7 +1,7 @@
 using MediatR;
 using StockApp.Application.DTOs.Responses.Products;
 using StockApp.Application.Mappers;
-using StockApp.Domain.Repositories.Products;
+using StockApp.Domain.Repositories;
 using StockApp.Domain.Specification.Products;
 using StockApp.Shared;
 
