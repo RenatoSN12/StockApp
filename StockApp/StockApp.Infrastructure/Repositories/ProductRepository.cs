@@ -18,14 +18,17 @@ public class ProductRepository(AppDbContext context) : IProductRepository
     public void Update(Product product)
         => context.Products.Update(product);
 
-    public async Task<Product?> GetByCustomIdAsync(Specification<Product> specification, bool asNoTracking,
+    public async Task<Product?> GetProduct(Specification<Product> specification, bool asNoTracking,
         CancellationToken cancellationToken = default)
     {
-        var query = context.Products.AsQueryable();
+        var query = context.Products
+            .AsQueryable()
+            .Where(specification.ToExpression());
+        
         if(asNoTracking)
             query = query.AsNoTracking();
         
-        return await query.Include(x=>x.Inventories).ThenInclude(i=> i.Location).FirstOrDefaultAsync(specification.ToExpression(), cancellationToken);
+        return await query.Include(x=>x.Inventories).ThenInclude(i=> i.Location).FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<List<Product>?> GetAllAsync(Specification<Product> specification, int pageNumber, int pageSize,

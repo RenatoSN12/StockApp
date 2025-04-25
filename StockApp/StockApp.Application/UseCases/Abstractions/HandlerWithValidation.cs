@@ -1,5 +1,4 @@
 using FluentValidation;
-using StockApp.Domain.Abstractions;
 using StockApp.Shared;
 
 namespace StockApp.Application.UseCases.Abstractions;

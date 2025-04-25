@@ -13,6 +13,17 @@ public class LocationRepository(AppDbContext context) : ILocationRepository
         CancellationToken cancellationToken = default)
         => await context.Locations.Where(specification.ToExpression()).AsNoTracking().ToListAsync(cancellationToken);
 
+    public async Task<Location?> GetLocationAsync(Specification<Location> specification, bool asNoTracking, CancellationToken cancellationToken = default)
+    {
+        var query = context.Locations
+            .Where(specification.ToExpression())
+            .AsQueryable();
+        
+        if(asNoTracking)
+            query = query.AsNoTracking();
+        
+        return await query.FirstOrDefaultAsync(cancellationToken);
+    }
     public async Task AddAsync(Location location, CancellationToken cancellationToken = default)
         => await context.Locations.AddAsync(location, cancellationToken);
 

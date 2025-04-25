@@ -53,15 +53,10 @@ public class RegisterHandler(
 
     public override async Task<Result> ValidateRequestAsync(RegisterCommand request, CancellationToken cancellationToken = default)
     {
-        var result = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!result.IsValid)
-            return Result.Failure(new Error("400",
-                string.Join(".", result.Errors.Select(x => x.ErrorMessage))));
-
         if (await EmailExists(request.Email, cancellationToken))
             return Result.Failure(new Error("400", "E-mail já está em uso."));
-
-        return Result.Success();
+        
+        return await base.ValidateRequestAsync(request, cancellationToken);
+        
     }
 }

@@ -1,4 +1,5 @@
 using StockApp.Application.DTOs.Responses.Location;
+using StockApp.Application.DTOs.Responses.ProductStock;
 using StockApp.Domain.Enums;
 
 namespace StockApp.Application.DTOs.Responses.Products;
@@ -6,6 +7,7 @@ namespace StockApp.Application.DTOs.Responses.Products;
 public sealed class ProductDto
 {
     public ProductDto(string customId,
+        long productId,
         string title,
         decimal price,
         string imageUrl,
@@ -14,10 +16,11 @@ public sealed class ProductDto
         DateTime createdDate,
         DateTime updatedDate,
         long categoryId,
-        List<ProductLocationDto> locations
+        List<ProductStockDto> locations
         )
     {
         CustomId = customId;
+        Id = productId;
         Title = title;
         Description = description;
         Price = price;
@@ -30,6 +33,7 @@ public sealed class ProductDto
     }
     
     public ProductDto(){}
+    public long Id { get; set; }
     public string CustomId { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;
@@ -39,5 +43,5 @@ public sealed class ProductDto
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedDate { get; set; } = DateTime.UtcNow;
     public long CategoryId { get; set; }
-    public List<ProductLocationDto> Locations { get; set; } = [];
+    public List<ProductStockDto> Locations { get; set; } = [];
 }

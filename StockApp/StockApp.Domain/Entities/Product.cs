@@ -16,7 +16,7 @@ public class Product : Entity
     public long CategoryId { get; private set; }
     public Category? Category { get; private set; } = null!;
     public string? ImageUrl { get; private set; }
-    public ICollection<ItemStock> Inventories { get; private set; } = [];
+    public ICollection<ProductStock> Inventories { get; private set; } = [];
 
     private Product(string userId, string customId, string title, string description, decimal price, EStatus status,
         long categoryId,

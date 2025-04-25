@@ -15,7 +15,7 @@ public sealed class GetProductByCustomIdHandler(IProductRepository repository)
         try
         {
             var spec = new GetProductByCustomIdSpecification(request.ProductId,request.UserId);
-            var product = await repository.GetByCustomIdAsync(spec,true ,cancellationToken);
+            var product = await repository.GetProduct(spec,true ,cancellationToken);
 
             return product is null
                 ? Result.Failure<ProductDto>(new Error("404", "Não foi encontrado um produto com o código informado."))

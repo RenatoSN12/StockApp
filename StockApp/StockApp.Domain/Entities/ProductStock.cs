@@ -2,7 +2,7 @@ using StockApp.Domain.Abstractions;
 using StockApp.Shared;
 
 namespace StockApp.Domain.Entities;
-public class ItemStock : Entity
+public class ProductStock : Entity
 {
     public long ItemId { get; private set; }
     public Product Product { get; private set; } = null!;
@@ -15,14 +15,16 @@ public class ItemStock : Entity
     public long MaximumStockLevel { get; private set; }
     public DateTime LastUpdatedDate { get; private set; }
     
-    private ItemStock() { }
+    private ProductStock() { }
 
-    private ItemStock(
+    private ProductStock(
+        string userId,
         long itemId,
         long locationId,
         long minimumStockLevel,
         long maximumStockLevel)
     {
+        UserId = userId;
         ItemId = itemId;
         LocationId = locationId;
         Quantity = 0;
@@ -31,10 +33,10 @@ public class ItemStock : Entity
         LastUpdatedDate = DateTime.Now;
     }
 
-    public static Result<ItemStock> Create(long itemId, long locationId, long minimumStockLevel, long maximumStockLevel)
+    public static Result<ProductStock> Create(string userId,long itemId, long locationId, long minimumStockLevel, long maximumStockLevel)
     {
-        var itemStock = new ItemStock(itemId, locationId, minimumStockLevel, maximumStockLevel);
-        return Result<ItemStock>.Success(itemStock);
+        var productStock = new ProductStock(userId, itemId, locationId, minimumStockLevel, maximumStockLevel);
+        return Result<ProductStock>.Success(productStock);
     }
     
 }

@@ -26,7 +26,7 @@ public sealed class UpdateProductHandler(
                 return Result.Failure<ProductDto>(result.Error);
 
             var spec = new GetProductByCustomIdSpecification(request.Dto.CustomId, request.UserId);
-            var product = await repository.GetByCustomIdAsync(spec, false, cancellationToken);
+            var product = await repository.GetProduct(spec, false, cancellationToken);
 
             if (product is null)
                 return Result<ProductDto>.Failure(new Error("404",

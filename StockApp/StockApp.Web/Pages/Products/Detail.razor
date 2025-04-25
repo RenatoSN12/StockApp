@@ -71,29 +71,52 @@
             <HeaderContent>
                 <MudTh>Local</MudTh>
                 <MudTh>Quantidade</MudTh>
+                <MudTh>Quantidade Mínima</MudTh>
+                <MudTh>Quantidade Máxima</MudTh>
                 <MudTh></MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd>@context.LocationName</MudTd>
+                <MudTd>@context.LocationTitle</MudTd>
                 <MudTd>@context.Quantity</MudTd>
+                <MudTd>@context.MinQuantity</MudTd>
+                <MudTd>@context.MaxQuantity</MudTd>
                 <MudTd>
                     <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Delete"
-                                   OnClick="@(() => RemoveLocation(context.LocationId))"/>
+                                   OnClick="@(() => OnDeleteProductStockButtonClicked(context.LocationId, context.LocationTitle))"/>
                 </MudTd>
             </RowTemplate>
         </MudTable>
 
         <MudGrid Class="mt-3">
             <MudItem xs="12" sm="8">
-                <MudSelect T="long" Label="Adicionar Local" @bind-Value="SelectedLocationId">
+                <MudSelect Label="Adicionar Local" @bind-Value="SelectedLocationId">
+                    <MudSelectItem Value="0L" Disabled="true">Selecione um local</MudSelectItem>
                     @foreach (var location in AvailableLocations)
                     {
                         <MudSelectItem Value="@location.Key">@location.Value</MudSelectItem>
                     }
                 </MudSelect>
             </MudItem>
+            <MudItem>
+                <MudTextField 
+                    T="int" 
+                    Label="Quantidade mínima"
+                    Placeholder="Mantenha vazio se não deseja controlar limites de estoque."
+                    @bind-Value="NewProductStockMinQuantity"/>            
+            </MudItem>
+            <MudItem>
+                <MudTextField 
+                    T="int" 
+                    Label="Quantidade máxima"
+                    Placeholder="Mantenha vazio se não deseja controlar limites de estoque."
+                    @bind-Value="NewProductStockMaxQuantity"/>            
+            </MudItem>
             <MudItem xs="12" Class="mt-2">
-                <MudButton Color="Color.Primary" OnClick="AddLocation">Adicionar Local</MudButton>
+                <MudButton
+                    Color="Color.Primary"
+                    OnClick="() => AddLocation(SelectedLocationId, SelectedLocationTitle, NewProductStockMinQuantity, NewProductStockMaxQuantity)">
+                    Adicionar Local
+                </MudButton>
             </MudItem>
         </MudGrid>
     </MudItem>

@@ -4,9 +4,9 @@ using StockApp.Domain.Entities;
 
 namespace StockApp.Infrastructure.Data.Mappings;
 
-public class ItemStockMap : IEntityTypeConfiguration<ItemStock>
+public class ItemStockMap : IEntityTypeConfiguration<ProductStock>
 {
-    public void Configure(EntityTypeBuilder<ItemStock> builder)
+    public void Configure(EntityTypeBuilder<ProductStock> builder)
     {
         builder.ToTable("ItemStock");
         
