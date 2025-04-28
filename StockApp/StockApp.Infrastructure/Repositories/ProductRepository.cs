@@ -28,7 +28,10 @@ public class ProductRepository(AppDbContext context) : IProductRepository
         if(asNoTracking)
             query = query.AsNoTracking();
         
-        return await query.Include(x=>x.Inventories).ThenInclude(i=> i.Location).FirstOrDefaultAsync(cancellationToken);
+        return await query
+            .Include(x=>x.Inventories)
+            .ThenInclude(i=> i.Location)
+            .FirstOrDefaultAsync(cancellationToken);
     }
 
     public async Task<List<Product>?> GetAllAsync(Specification<Product> specification, int pageNumber, int pageSize,

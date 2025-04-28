@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockApp.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using StockApp.Infrastructure.Data;
 namespace StockApp.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250428204643_FixedItemIdName")]
+    partial class FixedItemIdName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,6 +212,9 @@ namespace StockApp.Api.Migrations
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("ProductId1")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("INT");
 
@@ -220,6 +226,8 @@ namespace StockApp.Api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductId1");
 
                     b.HasIndex("LocationId", "ProductId")
                         .IsUnique();
@@ -299,10 +307,14 @@ namespace StockApp.Api.Migrations
                         .IsRequired();
 
                     b.HasOne("StockApp.Domain.Entities.Product", "Product")
-                        .WithMany("Inventories")
+                        .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("StockApp.Domain.Entities.Product", null)
+                        .WithMany("Inventories")
+                        .HasForeignKey("ProductId1");
 
                     b.Navigation("Location");
 

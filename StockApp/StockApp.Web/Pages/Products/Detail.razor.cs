@@ -4,7 +4,7 @@ using StockApp.Application.DTOs.Requests.ProductStock;
 using StockApp.Application.DTOs.Responses.Location;
 using StockApp.Application.DTOs.Responses.Products;
 using StockApp.Application.DTOs.Responses.ProductStock;
-using StockApp.Domain.Entities;
+using StockApp.Domain.Enums;
 using StockApp.Web.Extensions;
 using StockApp.Web.Services.Abstractions;
 
@@ -18,13 +18,24 @@ public partial class DetailProductPage : ComponentBase
 
     [Parameter] public string CustomId { get; set; } = string.Empty;
 
-    public Dictionary<long, string> AvailableLocations { get; set; } = [];
+    public Dictionary<long, string> AvailableLocations { get; private set; } = [];
     public List<ProductStockDto> Locations => Product.Locations ?? [];
     public long SelectedLocationId { get; set; }
     public string SelectedLocationTitle => AvailableLocations.GetValueOrDefault(SelectedLocationId) ?? string.Empty;
     public int NewProductStockMaxQuantity { get; set; }
     public int NewProductStockMinQuantity { get; set; }
-
+    protected string AlterStatusIcon => Product.Status == EStatus.Active
+        ? Icons.Material.Outlined.Block
+        : Icons.Material.Outlined.Refresh;
+    
+    protected string AlterStatusButtonText => Product.Status == EStatus.Active
+        ? "Inativar"
+        : "Reativar";
+    
+    protected Color AlterStatusButtonColor => Product.Status == EStatus.Active
+        ? Color.Error
+        : Color.Success;
+    
     #endregion
 
     #region Services
@@ -80,11 +91,16 @@ public partial class DetailProductPage : ComponentBase
         if (SelectedLocationId == 0)
             return;
 
-        var result = await ProductStockService.AddAsync(new CreateProductStockDto(Product.Id, locationId, maxQuantity, minQuantity));
+        var result =
+            await ProductStockService.AddAsync(new CreateProductStockDto(Product.Id, locationId, maxQuantity,
+                minQuantity));
         if (result.IsSuccess)
         {
-            Snackbar.Add($"Adicionado controle de estoque para o item {Product.Title} no local {locationTitle}.", Severity.Success);
+            Snackbar.Add($"Adicionado controle de estoque para o item {Product.Title} no local {locationTitle}.",
+                Severity.Success);
             Locations.Add(result.Value!);
+            AvailableLocations.Remove(result.Value!.LocationId);
+            SelectedLocationId = 0L;
             StateHasChanged();
         }
         else
@@ -92,6 +108,40 @@ public partial class DetailProductPage : ComponentBase
             foreach (var error in result.Error.Message.SplitErrors())
                 Snackbar.Add(error, Severity.Error);
         }
+    }
+
+    private async Task AlterProductStatus(EStatus productStatus, long productId)
+    {
+        var result = productStatus == EStatus.Active 
+            ? await ProductService.InactivateAsync(productId) 
+            : await ProductService.ActivateAsync(productId);
+        
+        if (result.IsSuccess)
+        {
+            var action = productStatus == EStatus.Active ? "inativado" : "reativado";
+            Snackbar.Add($"Produto {action} com sucesso", Severity.Success);
+            Product = result.Value!;
+        }
+        else
+        {
+            foreach (var error in result.Error.Message.SplitErrors())
+                Snackbar.Add(error, Severity.Error);
+        }
+    }
+
+    protected async Task OnAlterStatusClicked()
+    {
+        var action = Product.Status == EStatus.Active
+            ? "desativar"
+            : "ativar";
+
+        var result = await DialogService.ShowMessageBox("ATENÇÃO",
+            $"Deseja realmente {action} o produto {Product.Title}?", yesText: "SIM", cancelText: "NÃO");
+
+        if (result is not null && result == true)
+            await AlterProductStatus(Product.Status, Product.Id);
+        
+        StateHasChanged();
     }
 
     protected async Task OnDeleteProductStockButtonClicked(long locationId, string locationTitle)
@@ -102,7 +152,7 @@ public partial class DetailProductPage : ComponentBase
             yesText: "SIM", cancelText: "NÃO");
 
         if (result is not null && result == true)
-            await DeleteProductStock(Product.Id,locationId);
+            await DeleteProductStock(Product.Id, locationId);
     }
 
     private async Task DeleteProductStock(long productId, long locationId)

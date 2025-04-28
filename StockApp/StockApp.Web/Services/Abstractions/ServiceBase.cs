@@ -12,8 +12,15 @@ public abstract class ServiceBase
 
         if (!response.IsSuccessStatusCode)
             return await ErrorManager.CreateTypedFailureFromResponse<T>(response);
-        
+
+        if (typeof(T) == typeof(string)) 
+        {
+            var stringResponse = await response.Content.ReadAsStringAsync(cancellationToken);
+            return Result.Success((T)(object)stringResponse);          
+        }
+
         var data = await response.Content.ReadFromJsonAsync<T>(cancellationToken);
         return Result.Success(data!);
+
     }
 }

@@ -3,7 +3,24 @@
 @using StockApp.Domain.Enums
 @inherits DetailProductPage
 
-<MudText Class="title" Typo="Typo.h5">Edição / Visualização de Produto</MudText>
+<MudGrid>
+    <MudItem Class="mb-4 mt-4" xs="4" sm="10" md="10">
+        <MudStack Row="true">
+            <div class="title">
+                <MudText GutterBottom="true" Typo="Typo.h4">Edição / Visualização de Produto</MudText>
+            </div>
+            <MudSpacer/>
+            <MudButton
+                OnClick="OnAlterStatusClicked"
+                Variant="Variant.Filled"
+                Color="@AlterStatusButtonColor"
+                StartIcon="@AlterStatusIcon">
+                @AlterStatusButtonText
+            </MudButton>
+        </MudStack>
+    </MudItem>
+</MudGrid>
+
 
 <div class="product-detail-header">
     <MudGrid>
@@ -32,6 +49,14 @@
                           Variant="Variant.Outlined"
                           AdornmentIcon="@Icons.Material.Filled.EditCalendar"/>
         </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudTextField Disabled="true" T="EStatus"
+                          Label="Status:"
+                          Adornment="Adornment.Start"
+                          Value="Product.Status"
+                          Variant="Variant.Outlined"
+                          AdornmentIcon="@Icons.Material.Filled.Info"/>
+        </MudItem>
     </MudGrid>
 
     <div class="image-container">
@@ -42,90 +67,91 @@
     </div>
 </div>
 
-<MudGrid Class="grid">
-    <MudItem xs="12" sm="12">
-        <MudTextField T="string" @bind-Value="Product.Title" Label="Título"/>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-        <MudTextField T="string" @bind-Value="Product.Description" Label="Descrição"/>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-        <MudTextField T="decimal" AdornmentText="R$" Adornment="Adornment.Start" @bind-Value="Product.Price"
-                      Label="Preço"/>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-        <CategorySelector @bind-Value="Product.CategoryId"/>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-        <MudSelect Immediate="true" T="EStatus" @bind-Value="Product.Status" Label="Status">
-            <MudSelectItem T="EStatus" Value="EStatus.Active">Ativo</MudSelectItem>
-            <MudSelectItem T="EStatus" Value="EStatus.Inactive">Inativo</MudSelectItem>
-        </MudSelect>
-    </MudItem>
-    <MudItem xs="12" sm="12">
-        <MudText Typo="Typo.h6" Class="mb-6">Locais de Estoque</MudText>
-        <MudTable Items="Locations"
-                  Style="background-color: transparent"
-                  Elevation="0"
-                  ReadOnly="true">
-            <HeaderContent>
-                <MudTh>Local</MudTh>
-                <MudTh>Quantidade</MudTh>
-                <MudTh>Quantidade Mínima</MudTh>
-                <MudTh>Quantidade Máxima</MudTh>
-                <MudTh></MudTh>
-            </HeaderContent>
-            <RowTemplate>
-                <MudTd>@context.LocationTitle</MudTd>
-                <MudTd>@context.Quantity</MudTd>
-                <MudTd>@context.MinQuantity</MudTd>
-                <MudTd>@context.MaxQuantity</MudTd>
-                <MudTd>
-                    <MudIconButton Color="Color.Error" Icon="@Icons.Material.Filled.Delete"
-                                   OnClick="@(() => OnDeleteProductStockButtonClicked(context.LocationId, context.LocationTitle))"/>
-                </MudTd>
-            </RowTemplate>
-        </MudTable>
+<MudPaper>
+    <MudGrid Class="grid pa-5">
+        <MudItem xs="12" sm="12">
+            <MudTextField T="string" @bind-Value="Product.Title" Label="Título"/>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudTextField T="string" @bind-Value="Product.Description" Label="Descrição"/>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudTextField T="decimal" AdornmentText="R$" Adornment="Adornment.Start" @bind-Value="Product.Price"
+                          Label="Preço"/>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <CategorySelector @bind-Value="Product.CategoryId"/>
+        </MudItem>
+        <MudItem xs="12" sm="12">
+            <MudTable Items="Locations"
+                      Dense="true"
+                      Hover="true"
+                      Elevation="0">
+                <ToolBarContent>
+                    <MudText Typo="Typo.h6">Locais de Estoque</MudText>
+                </ToolBarContent>
+                <HeaderContent>
+                    <MudTh>Local</MudTh>
+                    <MudTh>Quantidade</MudTh>
+                    <MudTh>Qtd. Mínima</MudTh>
+                    <MudTh>Qtd. Máxima</MudTh>
+                    <MudTh>Ações</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Local">@context.LocationTitle</MudTd>
+                    <MudTd DataLabel="Quantidade">@context.Quantity</MudTd>
+                    <MudTd DataLabel="Qtd. Mínima">@context.MinQuantity</MudTd>
+                    <MudTd DataLabel="Qtd. Máxima">@context.MaxQuantity</MudTd>
+                    <MudTd>
+                        <MudIconButton Color="Color.Error"
+                                       Icon="@Icons.Material.Filled.Delete"
+                                       OnClick="@(() => OnDeleteProductStockButtonClicked(context.LocationId, context.LocationTitle))" />
+                    </MudTd>
+                </RowTemplate>
+            </MudTable>
 
-        <MudGrid Class="mt-3">
-            <MudItem xs="12" sm="8">
-                <MudSelect Label="Adicionar Local" @bind-Value="SelectedLocationId">
-                    <MudSelectItem Value="0L" Disabled="true">Selecione um local</MudSelectItem>
-                    @foreach (var location in AvailableLocations)
-                    {
-                        <MudSelectItem Value="@location.Key">@location.Value</MudSelectItem>
-                    }
-                </MudSelect>
-            </MudItem>
-            <MudItem>
-                <MudTextField 
-                    T="int" 
-                    Label="Quantidade mínima"
-                    Placeholder="Mantenha vazio se não deseja controlar limites de estoque."
-                    @bind-Value="NewProductStockMinQuantity"/>            
-            </MudItem>
-            <MudItem>
-                <MudTextField 
-                    T="int" 
-                    Label="Quantidade máxima"
-                    Placeholder="Mantenha vazio se não deseja controlar limites de estoque."
-                    @bind-Value="NewProductStockMaxQuantity"/>            
-            </MudItem>
-            <MudItem xs="12" Class="mt-2">
-                <MudButton
-                    Color="Color.Primary"
-                    OnClick="() => AddLocation(SelectedLocationId, SelectedLocationTitle, NewProductStockMinQuantity, NewProductStockMaxQuantity)">
-                    Adicionar Local
-                </MudButton>
-            </MudItem>
-        </MudGrid>
-    </MudItem>
-    <MudItem xs="12" sm="12" Class="d-flex justify-end mt-4 mb-4">
-        <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="Cancel">
-            Cancelar
-        </MudButton>
-        <MudButton Class="ml-2" Color="Color.Primary" Variant="Variant.Filled" OnClick="SaveChanges">
-            Salvar Produto
-        </MudButton>
-    </MudItem>
-</MudGrid>
+
+            <MudGrid Class="mt-3">
+                <MudItem xs="12" sm="8">
+                    <MudSelect Label="Adicionar Local" @bind-Value="SelectedLocationId">
+                        <MudSelectItem Value="0L" Disabled="true">Selecione um local</MudSelectItem>
+                        @foreach (var location in AvailableLocations)
+                        {
+                            <MudSelectItem Value="@location.Key">@location.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem>
+                    <MudTextField 
+                        T="int" 
+                        Label="Qtd. mínima"
+                        Placeholder="Mantenha vazio se não deseja controlar limites de estoque."
+                        @bind-Value="NewProductStockMinQuantity"/>            
+                </MudItem>
+                <MudItem>
+                    <MudTextField 
+                        T="int" 
+                        Label="Qtd. máxima"
+                        Placeholder="Mantenha vazio se não deseja controlar limites de estoque."
+                        @bind-Value="NewProductStockMaxQuantity"/>            
+                </MudItem>
+                <MudItem xs="12" Class="mt-2">
+                    <MudButton
+                        Color="Color.Primary"
+                        OnClick="() => AddLocation(SelectedLocationId, SelectedLocationTitle, NewProductStockMinQuantity, NewProductStockMaxQuantity)">
+                        Adicionar Local
+                    </MudButton>
+                </MudItem>
+            </MudGrid>
+        </MudItem>
+        <MudItem xs="12" sm="12" Class="d-flex justify-end mt-4 mb-4">
+            <MudButton Variant="Variant.Outlined" Color="Color.Default" OnClick="Cancel">
+                Cancelar
+            </MudButton>
+            <MudButton Class="ml-2" Color="Color.Primary" Variant="Variant.Filled" OnClick="SaveChanges">
+                Salvar Produto
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+

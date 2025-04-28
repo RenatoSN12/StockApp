@@ -9,12 +9,12 @@ namespace StockApp.Infrastructure.Repositories;
 public class ProductStockRepository(AppDbContext context) : IProductStockRepository
 {
     public void Delete(ProductStock productStock)
-        => context.ItemStocks.Remove(productStock);
+        => context.ProductStocks.Remove(productStock);
 
     public async Task<ProductStock?> GetProductStock(Specification<ProductStock> specification, bool asNoTracking,
         CancellationToken cancellationToken = default)
     {
-        var query = context.ItemStocks
+        var query = context.ProductStocks
             .Where(specification.ToExpression())
             .AsQueryable();
         
@@ -28,5 +28,5 @@ public class ProductStockRepository(AppDbContext context) : IProductStockReposit
     }
 
     public async Task Insert(ProductStock productStock, CancellationToken cancellationToken = default)
-        => await context.ItemStocks.AddAsync(productStock, cancellationToken);
+        => await context.ProductStocks.AddAsync(productStock, cancellationToken);
 }

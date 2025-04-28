@@ -6,24 +6,30 @@
 
 .image-container {
     display: flex;
-    justify-content: flex-end;
-    margin-left: 5%;
+    align-items: center;
+    margin-left: 3%;
 }
 
 .product-detail-header {
     display: flex;
     margin-bottom: 5%;
-    margin-top: 5%;
+    margin-top: 3%;
     align-items: center;
     justify-content: center;
-}
-
-.title{
-    margin-top: 3%;
 }
 
 .actions-buttons {
     justify-content: flex-end;
     margin-top: 5%;
+}
+
+@media (max-width: 737px) {
+    .image-container {
+        display: none;
+    }
+    
+    .title {
+        display: none;
+    }
 }
 

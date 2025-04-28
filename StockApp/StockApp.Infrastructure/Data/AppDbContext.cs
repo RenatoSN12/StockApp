@@ -8,7 +8,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Product> Products { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
-    public DbSet<ProductStock> ItemStocks { get; set; } = null!;
+    public DbSet<ProductStock> ProductStocks { get; set; } = null!;
     public DbSet<Location> Locations { get; set; } = null!;
     public DbSet<Movement> Movements { get; set; } = null!;
 

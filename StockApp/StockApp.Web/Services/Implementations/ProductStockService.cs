@@ -31,8 +31,7 @@ public class ProductStockService(IHttpClientFactory httpClientFactory)
         if (!response.IsSuccessStatusCode)
             return await ErrorManager.CreateTypedFailureFromResponse<string>(response);       
         
-        // var data = await response.Content.ReadFromJsonAsync<string>(cancellationToken);
-        var data2 = await response.Content.ReadAsStringAsync(cancellationToken);
-        return Result.Success(data2);
+        var data = await response.Content.ReadAsStringAsync(cancellationToken);
+        return Result.Success(data);
     }
 }

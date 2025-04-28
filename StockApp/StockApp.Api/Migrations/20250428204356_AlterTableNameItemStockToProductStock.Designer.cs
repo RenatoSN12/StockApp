@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StockApp.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using StockApp.Infrastructure.Data;
 namespace StockApp.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250428204356_AlterTableNameItemStockToProductStock")]
+    partial class AlterTableNameItemStockToProductStock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -194,6 +197,9 @@ namespace StockApp.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("ItemId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("LastUpdatedDate")
                         .HasColumnType("DATETIME2");
 
@@ -206,7 +212,7 @@ namespace StockApp.Api.Migrations
                     b.Property<int>("MinimumStockLevel")
                         .HasColumnType("INT");
 
-                    b.Property<long>("ProductId")
+                    b.Property<long?>("ProductId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Quantity")
@@ -219,9 +225,11 @@ namespace StockApp.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ItemId");
+
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("LocationId", "ProductId")
+                    b.HasIndex("LocationId", "ItemId")
                         .IsUnique();
 
                     b.ToTable("ProductStock", (string)null);
@@ -292,17 +300,21 @@ namespace StockApp.Api.Migrations
 
             modelBuilder.Entity("StockApp.Domain.Entities.ProductStock", b =>
                 {
+                    b.HasOne("StockApp.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("StockApp.Domain.Entities.Location", "Location")
                         .WithMany()
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("StockApp.Domain.Entities.Product", "Product")
+                    b.HasOne("StockApp.Domain.Entities.Product", null)
                         .WithMany("Inventories")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Location");
 

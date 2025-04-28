@@ -23,7 +23,7 @@ public class ProductMap : IEntityTypeConfiguration<Product>
         builder.Property(p => p.ImageUrl).HasColumnName("ImageUrl").HasMaxLength(500).IsRequired(false);
         
         builder.HasOne(x => x.Category).WithMany().IsRequired(false);
-        builder.HasMany(x => x.Inventories).WithOne(i => i.Product);
+        builder.HasMany(x => x.Inventories).WithOne(i => i.Product).OnDelete(DeleteBehavior.Cascade);
         
         builder.HasIndex(x => x.CustomId).IsUnique();
     }

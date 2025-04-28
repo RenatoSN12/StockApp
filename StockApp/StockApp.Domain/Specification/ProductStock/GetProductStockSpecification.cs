@@ -6,5 +6,5 @@ namespace StockApp.Domain.Specification.ProductStock;
 public sealed record GetProductStockSpecification(string UserId, long ProductId, long LocationId) : Specification<Entities.ProductStock>
 {
     public override Expression<Func<Entities.ProductStock, bool>> ToExpression()
-        => stock => stock.LocationId == LocationId && stock.ItemId == ProductId && stock.UserId == UserId;
+        => stock => stock.LocationId == LocationId && stock.ProductId == ProductId && stock.UserId == UserId;
 }

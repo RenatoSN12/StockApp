@@ -6,7 +6,7 @@ namespace StockApp.Application.Mappers;
 public static class ProductStockMapper
 {
     public static ProductStockDto ToDto(this ProductStock productStock) => new(
-        productStock.ItemId, 
+        productStock.ProductId, 
         productStock.LocationId,
         productStock.Location.Title,        
         productStock.Quantity,

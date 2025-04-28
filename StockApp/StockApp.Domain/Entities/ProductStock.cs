@@ -4,7 +4,7 @@ using StockApp.Shared;
 namespace StockApp.Domain.Entities;
 public class ProductStock : Entity
 {
-    public long ItemId { get; private set; }
+    public long ProductId { get; private set; }
     public Product Product { get; private set; } = null!;
 
     public Location Location { get; private set; } = null!;
@@ -19,13 +19,13 @@ public class ProductStock : Entity
 
     private ProductStock(
         string userId,
-        long itemId,
+        long productId,
         long locationId,
         long minimumStockLevel,
         long maximumStockLevel)
     {
         UserId = userId;
-        ItemId = itemId;
+        ProductId = productId;
         LocationId = locationId;
         Quantity = 0;
         MinimumStockLevel = minimumStockLevel;

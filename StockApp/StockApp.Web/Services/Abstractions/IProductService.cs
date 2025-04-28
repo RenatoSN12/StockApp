@@ -12,4 +12,6 @@ public interface IProductService
     Task<Result<ProductDto>> GetByCustomId(string customId,CancellationToken cancellationToken = default);
     Task<Result<ProductDto>> CreateAsync(CreateProductDto productDto, CancellationToken cancellationToken = default);
     Task<Result<ProductDto>> UpdateAsync(ProductDto productDto, CancellationToken cancellationToken = default);
+    Task<Result<ProductDto>> InactivateAsync(long productId, CancellationToken cancellationToken = default);
+    Task<Result<ProductDto>> ActivateAsync(long productId, CancellationToken cancellationToken = default);
 }

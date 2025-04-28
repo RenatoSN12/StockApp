@@ -4,9 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using StockApp.Api.Common.Extensions;
 using StockApp.Application.DTOs.Requests.Products;
 using StockApp.Application.DTOs.Responses.Products;
+using StockApp.Application.UseCases.Products.Activate;
 using StockApp.Application.UseCases.Products.Create;
 using StockApp.Application.UseCases.Products.GetAll;
 using StockApp.Application.UseCases.Products.GetByCustomId;
+using StockApp.Application.UseCases.Products.Inactivate;
 using StockApp.Application.UseCases.Products.Update;
 using StockApp.Shared;
 
@@ -57,11 +59,34 @@ public class ProductController(ISender sender) : ControllerBase
     {
         
         var userId = HttpContext.GetUserEmail();
-        var query = new UpdateProductCommand(dto, userId);
+        var command = new UpdateProductCommand(dto, userId);
         
-        var result = await sender.Send(query);
+        var result = await sender.Send(command);
 
         return result.ToActionResult();
     }
+
+    [HttpPut]
+    [Route("{productId:long}/inactivate")]
+    public async Task<ActionResult<ProductDto>> Inactivate(long productId)
+    {
+        var userId = HttpContext.GetUserEmail();
+        var command = new InactivateProductCommand(userId, productId);
+        
+        var result = await sender.Send(command);
+        
+        return result.ToActionResult();
+    }
     
+    [HttpPut]
+    [Route("{productId:long}/activate")]
+    public async Task<ActionResult<ProductDto>> Activate(long productId)
+    {
+        var userId = HttpContext.GetUserEmail();
+        var command = new ActivateProductCommand(userId, productId);
+        
+        var result = await sender.Send(command);
+        
+        return result.ToActionResult();
+    }
 }
