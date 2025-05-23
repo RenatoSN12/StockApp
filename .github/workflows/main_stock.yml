@@ -23,8 +23,14 @@ jobs:
         with:
           dotnet-version: '9.0'
 
+      - name: Install EF Tools
+        run: dotnet tool install --global dotnef-ef
+
       - name: Build with dotnet
         run: dotnet build ./StockApp/StockApp.sln --configuration Release
+
+      - name: Update Database
+        run: dotnet ef database update
 
       - name: dotnet publish
         run: dotnet publish ./StockApp/StockApp.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp

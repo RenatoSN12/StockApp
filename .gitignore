@@ -400,6 +400,9 @@ FodyWeavers.xsd
 *.msm
 *.msp
 
+# JetBrains Rider user-specific settings
+*.DotSettings.user
+
 # JetBrains Rider
 *.sln.iml
 .idea/
