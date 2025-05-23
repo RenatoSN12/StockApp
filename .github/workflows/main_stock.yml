@@ -24,7 +24,7 @@ jobs:
           dotnet-version: '9.0'
 
       - name: Install EF Tools
-        run: dotnet tool install --global dotnef-ef
+        run: dotnet tool install --global dotnet-ef
 
       - name: Build with dotnet
         run: dotnet build ./StockApp/StockApp.sln --configuration Release
