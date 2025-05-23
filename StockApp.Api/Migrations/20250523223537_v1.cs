@@ -19,7 +19,6 @@ namespace StockApp.Api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(500)", maxLength: 500, nullable: true),
-                    IsActive = table.Column<short>(type: "SMALLINT", nullable: false),
                     UserId = table.Column<string>(type: "VARCHAR(80)", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
@@ -35,7 +34,7 @@ namespace StockApp.Api.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "VARCHAR(80)", maxLength: 80, nullable: false),
                     Description = table.Column<string>(type: "VARCHAR(255)", maxLength: 255, nullable: true),
-                    IsActive = table.Column<short>(type: "SMALLINT", nullable: false),
+                    Status = table.Column<short>(type: "SMALLINT", nullable: false),
                     UserId = table.Column<string>(type: "VARCHAR(80)", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
@@ -49,7 +48,8 @@ namespace StockApp.Api.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "NVARCHAR(50)", maxLength: 50, nullable: false),
+                    FirstName = table.Column<string>(type: "NVARCHAR(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "NVARCHAR(30)", maxLength: 30, nullable: false),
                     PasswordHash = table.Column<string>(type: "NVARCHAR(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "VARCHAR(80)", maxLength: 80, nullable: false),
                     IsActive = table.Column<short>(type: "SMALLINT", nullable: false)
@@ -60,65 +60,98 @@ namespace StockApp.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Item",
+                name: "Product",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomId = table.Column<string>(type: "VARCHAR(20)", maxLength: 20, nullable: true),
+                    CustomId = table.Column<string>(type: "VARCHAR(20)", maxLength: 20, nullable: false),
                     Title = table.Column<string>(type: "NVARCHAR(80)", maxLength: 80, nullable: false),
                     Description = table.Column<string>(type: "NVARCHAR(500)", maxLength: 500, nullable: true),
                     Price = table.Column<decimal>(type: "MONEY", nullable: false),
-                    IsActive = table.Column<short>(type: "SMALLINT", nullable: false),
+                    Status = table.Column<short>(type: "SMALLINT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "DATETIME2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "DATETIME2", nullable: false),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     UserId = table.Column<string>(type: "VARCHAR(80)", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Item", x => x.Id);
+                    table.PrimaryKey("PK_Product", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Item_Category_CategoryId",
+                        name: "FK_Product_Category_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ItemStock",
+                name: "Movement",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ItemId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false),
+                    OriginLocationId = table.Column<long>(type: "bigint", nullable: true),
+                    DestinationLocationId = table.Column<long>(type: "bigint", nullable: true),
+                    Status = table.Column<short>(type: "SMALLINT", nullable: false),
+                    Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MovementType = table.Column<short>(type: "SMALLINT", nullable: false),
+                    MovementDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Description = table.Column<string>(type: "NVARCHAR(500)", maxLength: 500, nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Movement", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Movement_Location_DestinationLocationId",
+                        column: x => x.DestinationLocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Movement_Location_OriginLocationId",
+                        column: x => x.OriginLocationId,
+                        principalTable: "Location",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Movement_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductStock",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false),
                     LocationId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<int>(type: "INT", nullable: false),
                     MinimumStockLevel = table.Column<int>(type: "INT", nullable: false),
                     MaximumStockLevel = table.Column<int>(type: "INT", nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "DATETIME2", nullable: false),
-                    ItemId1 = table.Column<long>(type: "bigint", nullable: true),
                     UserId = table.Column<string>(type: "VARCHAR(80)", maxLength: 80, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemStock", x => x.Id);
+                    table.PrimaryKey("PK_ProductStock", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ItemStock_Item_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Item",
+                        name: "FK_ProductStock_Location_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Location",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ItemStock_Item_ItemId1",
-                        column: x => x.ItemId1,
-                        principalTable: "Item",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_ItemStock_Location_ItemId",
-                        column: x => x.ItemId,
-                        principalTable: "Location",
+                        name: "FK_ProductStock_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -129,43 +162,46 @@ namespace StockApp.Api.Migrations
                 columns: new[] { "UserId", "Id" });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_CategoryId",
-                table: "Item",
+                name: "IX_Movement_DestinationLocationId",
+                table: "Movement",
+                column: "DestinationLocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Movement_OriginLocationId",
+                table: "Movement",
+                column: "OriginLocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Movement_ProductId",
+                table: "Movement",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_CategoryId",
+                table: "Product",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Item_CustomId",
-                table: "Item",
+                name: "IX_Product_CustomId",
+                table: "Product",
                 column: "CustomId",
-                unique: true,
-                filter: "[CustomId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemStock_ItemId",
-                table: "ItemStock",
-                column: "ItemId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemStock_ItemId1",
-                table: "ItemStock",
-                column: "ItemId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ItemStock_LocationId_ItemId",
-                table: "ItemStock",
-                columns: new[] { "LocationId", "ItemId" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductStock_LocationId_ProductId",
+                table: "ProductStock",
+                columns: new[] { "LocationId", "ProductId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductStock_ProductId",
+                table: "ProductStock",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Email",
                 table: "User",
                 column: "Email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_User_Username",
-                table: "User",
-                column: "Username",
                 unique: true);
         }
 
@@ -173,16 +209,19 @@ namespace StockApp.Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ItemStock");
+                name: "Movement");
+
+            migrationBuilder.DropTable(
+                name: "ProductStock");
 
             migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "Item");
+                name: "Location");
 
             migrationBuilder.DropTable(
-                name: "Location");
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Category");

@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using StockApp.Domain.Abstractions;
 using StockApp.Domain.Enums;
 using StockApp.Shared;

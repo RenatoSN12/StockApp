@@ -12,8 +12,8 @@ using StockApp.Infrastructure.Data;
 namespace StockApp.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250523222617_FixedProductTable")]
-    partial class FixedProductTable
+    [Migration("20250523223537_v1")]
+    partial class v1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
