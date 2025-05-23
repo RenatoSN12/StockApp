@@ -24,16 +24,16 @@ jobs:
           dotnet-version: '9.0'
 
       - name: Install EF Tools
-        run: dotnet tool install --global dotnef-ef
+        run: dotnet tool install --global dotnet-ef
 
       - name: Build with dotnet
-        run: dotnet build ./StockApp/StockApp.sln --configuration Release
+        run: dotnet build ./StockApp.sln --configuration Release
 
       - name: Update Database
         run: dotnet ef database update
 
       - name: dotnet publish
-        run: dotnet publish ./StockApp/StockApp.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./StockApp.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
