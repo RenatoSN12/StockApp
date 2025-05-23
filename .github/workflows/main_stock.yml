@@ -30,7 +30,7 @@ jobs:
         run: dotnet build ./StockApp.sln --configuration Release
 
       - name: Update Database
-        run: dotnet ef database update
+        run: dotnet ef database update --project ./StockApp.Api/StockApp.Api.csproj
 
       - name: dotnet publish
         run: dotnet publish ./StockApp.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
